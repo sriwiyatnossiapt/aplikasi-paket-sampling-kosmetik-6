@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renlak Kosmetik 2026</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root { 
+            --primary-blue: #455a64;
+            --bg-light: #f1f4f5; 
+            --blue-grey-soft: #eceff1;
+            --blue-grey-border: #cfd8dc; 
+            --sidebar-width: 280px;
+        }
+        
+        body { 
+            background-color: var(--bg-light); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            overflow-x: hidden;
+        }
+        
+        /* Sidebar */
+        .sidebar { 
+            height: 100vh; 
+            background: white; 
+            border-right: 1px solid #dee2e6; 
+            position: fixed; 
+            width: var(--sidebar-width); 
+            z-index: 1000; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            left: 0;
+            top: 0;
+        }
+
+        /* Sidebar Collapsed */
+        .sidebar.collapsed {
+            left: calc(var(--sidebar-width) * -1);
+        }
+
+        .nav-link { 
+            color: #555; 
+            padding: 12px 20px; 
+            display: flex; 
+            align-items: center; 
+            border-radius: 8px; 
+            margin: 5px 15px; 
+            text-decoration: none; 
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .nav-link:hover { 
+            background-color: #f8f9fa; 
+            color: #607d8b; 
+        }
+        
+        .nav-link.active { 
+            background-color: #607d8b; 
+            color: white !important; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+        
+        .nav-link i { 
+            margin-right: 12px; 
+            font-size: 20px;
+        }
+        
+        /* Content */
+        .main-content { 
+            margin-left: var(--sidebar-width); 
+            padding: 40px; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .main-content.expanded {
+            margin-left: 0;
+        }
+        
+        /* BACKGROUND FORM ABU-ABU KEBIRUAN */
+        .form-card { 
+            background: var(--blue-grey-soft); 
+            padding: 35px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid var(--blue-grey-border); 
+        }
+        
+        .header-title { 
+            border-left: 5px solid #607d8b; 
+            padding-left: 15px; 
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Label */
+        label { 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            color: #37474f; 
+            margin-bottom: 6px; 
+        }
+        
+        /* Input field */
+        .form-control, .form-select { 
+            border-radius: 10px; 
+            padding: 11px; 
+            border: 1px solid #b0bec5; 
+            background-color: white; 
+        }
+        
+        .form-control:focus, .form-select:focus { 
+            border-color: #607d8b; 
+            box-shadow: 0 0 0 0.25rem rgba(96, 125, 139, 0.1); 
+        }
+        
+        /* Field readonly */
+        .readonly-field { 
+            background-color: #fdfdfd !important; 
+            color: #78909c; 
+            font-weight: bold; 
+            border: 1px dashed #b0bec5; 
+        }
+        
+        /* Tombol */
+        .btn-submit { 
+            background-color: #607d8b; 
+            border: none; 
+            padding: 12px 30px; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            color: white; 
+            transition: 0.3s; 
+        }
+        
+        .btn-submit:hover { 
+            background-color: #455a64; 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+        }
+
+        /* ← PERBAIKAN BUTTON BURGER */
+        #btnToggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary-blue);
+        }
+
+        #btnToggle:hover {
+            opacity: 0.7;
+        }
+
+        /* Sidebar Overlay untuk Mobile */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 768px) {
+            :root {
+                --sidebar-width: 280px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .header-title {
+                margin-bottom: 20px;
+            }
+
+            /* Sidebar di mobile harus tetap visible saat di-toggle */
+            .sidebar {
+                left: -280px;
+            }
+
+            .sidebar.show {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="sidebar">
+    <div class="p-4 mb-3">
+        <h4 class="fw-bold text-dark mb-0" style="color: #455a64 !important;">App Kosmetik</h4>
+        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Sampling Renlak 2026</small>
+    </div>
+    <nav class="nav flex-column">
+        <a class="nav-link active"><i class="material-icons">add_task</i> Input Sampling</a>
+        <a class="nav-link" onclick="alert('Masih dalam pengembangan')"><i class="material-icons">analytics</i> Rekap Renlak</a>
+        <a class="nav-link" href="https://docs.google.com/spreadsheets/d/1XfaZIgQGlgr3r6-zBGdy0QeCiLD_iws8auUR00DWZfY/edit?gid=0#gid=0" target="_blank">
+            <i class="material-icons">table_view</i> Database Mentah
+        </a>
+        <hr class="mx-3">
+        <a class="nav-link text-danger" onclick="window.close()"><i class="material-icons">power_settings_new</i> Keluar</a>
+    </nav>
+</div>
+
+<div class="main-content">
+    <div class="header-title">
+        <div><h2 class="fw-bold text-dark m-0">Form Renlak Kosmetik 2026</h2></div>
+        <button id="btnToggle" onclick="toggleSidebar()" title="Menu">
+            <i class="material-icons">menu</i>
+        </button>
+    </div>
+
+    <div class="form-card">
+        <form id="kosmetikForm" class="row g-4">
+            <div class="col-md-2">
+                <label>1. No (Auto)</label>
+                <input type="text" id="noSample" class="form-control readonly-field" value="Otomatis" readonly>
+            </div>
+            <div class="col-md-3">
+                <label>2. Tanggal</label>
+                <input type="text" id="tglSampling" class="form-control readonly-field" readonly>
+            </div>
+            <div class="col-md-3">
+                <label>12. Bulan (Angka)</label>
+                <input type="text" id="bulanAuto" class="form-control readonly-field" readonly>
+            </div>
+            <div class="col-md-4">
+                <label>13. Petugas</label>
+                <input type="text" id="petugas" class="form-control" placeholder="Nama Petugas" required>
+            </div>
+
+            <div class="col-md-6">
+                <label>3. Nama Produk</label>
+                <input type="text" id="namaProduk" class="form-control" 
+                       placeholder="Nama produk kosmetik" 
+                       onblur="triggerAutoHide()" 
+                       required>
+            </div>
+            <div class="col-md-6">
+                <label>4. Kategori</label>
+                <select id="kategori" class="form-select" onchange="updateSubKategori()" required>
+                    <option value="" disabled selected>Pilih Kategori...</option>
+                    <option>Kosmetik Beresiko Tinggi</option>
+                    <option>Kosmetik dengan riwayat Tidak Memenuhi Syarat</option>
+                    <option>Kosmetik yang disampling secara mandiri oleh UPT</option>
+                    <option>Kosmetik yang diproduksi negara Tiongkok</option>
+                    <option>Kosmetik yang dibuat berdasarkan kontrak produksi</option>
+                    <option>Kosmetik yang dibuat berdasarkan kuasa merek</option>
+                    <option>Kosmetik menengah ke bawah</option>
+                    <option>Kosmetik dengan klaim komposisi bahan tertentu</option>
+                    <option>Kosmetik yang diduga mengandung DNA porcine</option>
+                    <option>Kosmetik viral</option>
+                    <option>Kosmetik di online official store/reseller</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label>5. Sub Kategori</label>
+                <select id="subKategori" class="form-select" required>
+                    <option value="" disabled selected>Pilih Kategori dahulu...</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label>6. Sub-Sub Kategori</label>
+                <input type="text" id="subSubKategori" class="form-control" placeholder="Isi jika ada">
+            </div>
+            <div class="col-md-4">
+                <label>7. Metode Sampling</label>
+                <select id="metode" class="form-select">
+                    <option>Offline</option>
+                    <option>Online</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label>8. NIE (Izin Edar)</label>
+                <input type="text" id="nie" class="form-control" placeholder="NA18xxxxxxxx">
+            </div>
+            <div class="col-md-4">
+                <label>9. Nomor Batch</label>
+                <input type="text" id="noBatch" class="form-control" placeholder="Batch produksi">
+            </div>
+            <div class="col-md-4">
+                <label>10. Expired Date</label>
+                <input type="text" id="expDate" class="form-control" placeholder="Tgl/Bulan/Tahun">
+            </div>
+
+            <div class="col-12">
+                <label>11. Tempat Sampling</label>
+                <input type="text" id="tempatSampling" class="form-control" placeholder="Lokasi toko atau marketplace">
+            </div>
+
+            <div class="col-12 text-end pt-4 border-top mt-4">
+                <button type="reset" class="btn btn-light px-4 me-2">Reset</button>
+                <button type="submit" id="btnSimpan" class="btn btn-submit shadow-sm">KIRIM DATA KOSMETIK</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const dataKategori = {
+        "Kosmetik Beresiko Tinggi": ["Sediaan bayi", "Sediaan perawatan wajah", "krim siang", "krim malam", "Pelembab/ Moisturiser", "Sediaan rias mata", "Eye shadow", "Pensil alis", "Mascara", "Sediaan rias wajah (perona pipi)", "Sediaan rias bibir (lip color)", "Sediaan parfum (eau de cologne)", "Sediaan pewarna kuku"],
+        "Kosmetik dengan riwayat Tidak Memenuhi Syarat": ["Sediaan untuk alis (pensil alis)", "Eye shadow", "Eye liner", "Blush on", "Bedak padat/ compact powder", "Pembersih kulit muka", "Mascara", "Eye Make Up Remover", "Penyegar kulit muka/toner", "Lip colour, Lip liner, Lip glos, Lip care", "Pewarna kuku", "Sediaan parfum (eau de cologne)", "Krim pencerah/Skin lightener", "Eau de Toilette/ Eau de Parfume/ Eau de Cologne/ Parfume", "krim siang", "krim malam", "Sediaan tabir surya"],
+        "Kosmetik yang disampling secara mandiri oleh UPT": ["Bedak Badan", "Lip Care", "Mouthwashes / Penyegar mulut", "Kondisioner", "Pembersih Rias Mata/ Eye Make up Remover", "Pembersih Kulit Muka", "Sampo", "Sabun Mandi Bayi Padat", "Sabun Cuci Tangan Cair", "Sampo Ketombe", "Anti Aging / Skin Aging Product", "Cairan Cukur / Pra Cukur / Pasca Cukur", "Kosmetik yang diproduksi negara Filipina", "Kosmetik Prioritas", "Kosmetik kasus khusus (Wasprod)", "Mainan berkosmetik", "Kosmetik yang diproduksi negara Thailand", "Bedak padat/ compact powder", "Pembersih kulit muka", "Lem bulu mata", "Penyegar kulit muka/toner", "Lip colour, Lip liner, Lip glos, Lip care", "Perawatan Kulit Badan Tangan/ Hand Body Lotion", "External Intimate Hygiene", "Deodoran / Antiperspiran", "Pembersih Rambut dan Badan/ Hair and Body Wash", "Sediaan untuk kulit berjerawat"],
+        "Kosmetik yang diproduksi negara Tiongkok": ["Krim malam", "Krim Siang/ Day Cream", "Masker Wajah", "Bedak padat/ compact powder", "Eye Make Up Remover", "Lip colour, Lip liner, Lip glos, Lip care", "Mascara", "Pelembab/ Moisturiser", "Pembersih Kulit Muka", "Eau de Toilette/ Eau de Parfume/ Eau de Cologne/ Parfume", "lipstik"],
+        "Kosmetik yang dibuat berdasarkan kontrak produksi": ["Day Cream", "Night Cream", "Eau de Toilette/ Eau de Parfume/ Eau de Cologne/ Parfume", "Sediaan tabir surya", "Skin aging product", "Pembersih kulit muka", "Penyegar kulit muka/toner", "Pelembab/ Moisturiser", "Krim pencerah/Skin lightener"],
+        "Kosmetik yang dibuat berdasarkan kuasa merek": ["Day Cream", "Night Cream", "Perawatan Kulit Badan Tangan/ Hand Body Lotion", "Eau de Toilette/ Eau de Parfume/ Eau de Cologne/ Parfume", "Pembersih kulit muka", "Penyegar kulit muka/toner", "Pelembab/ Moisturiser", "Lip colour, Lip liner, Lip glos, Lip care", "Bedak padat/ compact powder", "Bedak wajah", "Hair Body wash", "Baby Hair Body wash"],
+        "Kosmetik menengah ke bawah": ["Bedak padat/ compact powder", "Pembersih kulit muka", "Lem bulu mata", "Eye Make Up Remover", "Penyegar kulit muka/toner", "Lip colour, Lip liner, Lip glos, Lip care", "Pembersih pewarna kuku/ Nail polish remover", "Perawatan Kulit Badan Tangan/ Hand Body Lotion", "External Intimate Hygiene", "Pelembab/ Moisturiser", "Astringent", "Deodoran / Antiperspiran", "Pembersih Rambut dan Badan/ Hair and Body Wash", "Sediaan untuk kulit berjerawat", "Eau de Toilette/ Eau de Parfume/ Eau de Cologne/ Parfume"],
+        "Kosmetik dengan klaim komposisi bahan tertentu": ["Baby cream", "sediaan bayi lainnya", "sediaan tabir surya", "-"],
+        "Kosmetik yang diduga mengandung DNA porcine": ["pelembam/moisturizer"],
+        "Kosmetik viral": ["Lip colour, Lip liner, Lip glos, Lip care", "Skin aging product", "Day Cream", "Night Cream", "Pelembab/ Moisturiser"],
+        "Kosmetik di online official store/reseller": ["Lip colour, Lip liner, Lip glos, Lip care", "Skin aging product", "Day Cream", "Night Cream", "Pelembab/ Moisturiser"]
+    };
+
+    // ============================================
+    // TOGGLE SIDEBAR MOBILE
+    // ============================================
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+        const overlay = document.getElementById('overlay');
+        
+        if (window.innerWidth <= 768) {
+            // Mobile: toggle show/hide
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('active');
+        } else {
+            // Desktop: toggle collapsed
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+    }
+
+    // ============================================
+    // UPDATE SUB KATEGORI
+    // ============================================
+    function updateSubKategori() {
+        const kat = document.getElementById("kategori").value;
+        const subKat = document.getElementById("subKategori");
+        subKat.innerHTML = '<option value="" disabled selected>Pilih Sub Kategori...</option>';
+        if (dataKategori[kat]) {
+            dataKategori[kat].forEach(item => {
+                let opt = document.createElement("option");
+                opt.value = item;
+                opt.innerHTML = item;
+                subKat.appendChild(opt);
+            });
+        }
+    }
+
+    // ============================================
+    // GENERATE TIMESTAMP & BULAN OTOMATIS
+    // ============================================
+    function setupAuto() {
+        const d = new Date();
+        document.getElementById('tglSampling').value = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+        document.getElementById('bulanAuto').value = d.getMonth() + 1;
+    }
+
+    window.onload = setupAuto;
+
+    // ============================================
+    // TRIGGER AUTO HIDE SAAT BLUR NAMA PRODUK
+    // ============================================
+    function triggerAutoHide() {
+        const hideUrl = 'https://script.google.com/macros/s/AKfycbxsE2R4nWkEvscA4k8_DXski3T1TfheJ9E5Lmhui6QcCISwukmJa0R9l6ziLStTNHXK/exec';
+        
+        fetch(hideUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify({ action: 'hideRows' })
+        })
+        .then(() => console.log("Auto hide processed"))
+        .catch(err => console.log("Auto hide error:", err));
+    }
+
+    // ============================================
+    // FORM SUBMIT & KIRIM DATA
+    // ============================================
+    document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnSimpan');
+        btn.disabled = true;
+        btn.innerHTML = 'Mengirim...';
+
+        const data = {
+            tanggal: document.getElementById('tglSampling').value,
+            produk: document.getElementById('namaProduk').value,
+            kategori: document.getElementById('kategori').value,
+            subKategori: document.getElementById('subKategori').value,
+            subSubKategori: document.getElementById('subSubKategori').value,
+            metode: document.getElementById('metode').value,
+            nie: document.getElementById('nie').value,
+            batch: document.getElementById('noBatch').value,
+            expired: document.getElementById('expDate').value,
+            tempat: document.getElementById('tempatSampling').value,
+            bulan: document.getElementById('bulanAuto').value,
+            petugas: document.getElementById('petugas').value
+        };
+        
+        const webAppUrl = 'https://script.google.com/macros/s/AKfycbxsE2R4nWkEvscA4k8_DXski3T1TfheJ9E5Lmhui6QcCISwukmJa0R9l6ziLStTNHXK/exec';
+        
+        fetch(webAppUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify(data)
+        })
+        .then(() => {
+            alert("✅ Data Kosmetik Berhasil Terkirim!");
+            document.getElementById('kosmetikForm').reset();
+            setupAuto();
+            updateSubKategori();
+        })
+        .catch(err => alert("❌ Gagal: " + err))
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerText = "KIRIM DATA KOSMETIK";
+        });
+    });
+</script>
+
+</body>
+</html>
