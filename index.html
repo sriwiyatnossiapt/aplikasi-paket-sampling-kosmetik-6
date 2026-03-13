@@ -21,7 +21,6 @@
             overflow-x: hidden;
         }
         
-        /* Sidebar */
         .sidebar { 
             height: 100vh; 
             background: white; 
@@ -34,7 +33,6 @@
             top: 0;
         }
 
-        /* Sidebar Collapsed */
         .sidebar.collapsed {
             left: calc(var(--sidebar-width) * -1);
         }
@@ -67,7 +65,6 @@
             font-size: 20px;
         }
         
-        /* Content */
         .main-content { 
             margin-left: var(--sidebar-width); 
             padding: 40px; 
@@ -78,7 +75,6 @@
             margin-left: 0;
         }
         
-        /* BACKGROUND FORM ABU-ABU KEBIRUAN */
         .form-card { 
             background: var(--blue-grey-soft); 
             padding: 35px; 
@@ -96,7 +92,6 @@
             align-items: center;
         }
         
-        /* Label */
         label { 
             font-size: 0.85rem; 
             font-weight: 600; 
@@ -104,7 +99,6 @@
             margin-bottom: 6px; 
         }
         
-        /* Input field */
         .form-control, .form-select { 
             border-radius: 10px; 
             padding: 11px; 
@@ -112,12 +106,6 @@
             background-color: white; 
         }
         
-        .form-control:focus, .form-select:focus { 
-            border-color: #607d8b; 
-            box-shadow: 0 0 0 0.25rem rgba(96, 125, 139, 0.1); 
-        }
-        
-        /* Field readonly */
         .readonly-field { 
             background-color: #fdfdfd !important; 
             color: #78909c; 
@@ -125,7 +113,6 @@
             border: 1px dashed #b0bec5; 
         }
         
-        /* Tombol */
         .btn-submit { 
             background-color: #607d8b; 
             border: none; 
@@ -135,14 +122,7 @@
             color: white; 
             transition: 0.3s; 
         }
-        
-        .btn-submit:hover { 
-            background-color: #455a64; 
-            transform: translateY(-2px); 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
-        }
 
-        /* ← PERBAIKAN BUTTON BURGER */
         #btnToggle {
             background: none;
             border: none;
@@ -150,58 +130,24 @@
             padding: 8px;
             display: flex;
             align-items: center;
-            justify-content: center;
             font-size: 24px;
             color: var(--primary-blue);
         }
 
-        #btnToggle:hover {
-            opacity: 0.7;
-        }
-
-        /* Sidebar Overlay untuk Mobile */
         .sidebar-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.5);
             z-index: 999;
         }
 
-        .sidebar-overlay.active {
-            display: block;
-        }
+        .sidebar-overlay.active { display: block; }
 
-        /* Responsive Mobile */
         @media (max-width: 768px) {
-            :root {
-                --sidebar-width: 280px;
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 20px;
-            }
-
-            .form-card {
-                padding: 20px;
-            }
-
-            .header-title {
-                margin-bottom: 20px;
-            }
-
-            /* Sidebar di mobile harus tetap visible saat di-toggle */
-            .sidebar {
-                left: -280px;
-            }
-
-            .sidebar.show {
-                left: 0;
-            }
+            .main-content { margin-left: 0; padding: 20px; }
+            .sidebar { left: -280px; }
+            .sidebar.show { left: 0; }
         }
     </style>
 </head>
@@ -211,29 +157,45 @@
 
 <div class="sidebar">
     <div class="p-4 mb-3">
-        <h4 class="fw-bold text-dark mb-0" style="color: #455a64 !important;">App Kosmetik</h4>
+        <h4 class="fw-bold text-dark mb-0">App Kosmetik</h4>
         <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Sampling Renlak 2026</small>
     </div>
     <nav class="nav flex-column">
-        <a class="nav-link active"><i class="material-icons">add_task</i> Input Sampling</a>
-        <a class="nav-link" onclick="alert('Masih dalam pengembangan')"><i class="material-icons">analytics</i> Rekap Renlak</a>
-        <a class="nav-link" href="https://docs.google.com/spreadsheets/d/1XfaZIgQGlgr3r6-zBGdy0QeCiLD_iws8auUR00DWZfY/edit?gid=0#gid=0" target="_blank">
+        <a class="nav-link active" onclick="showForm()" id="menuInput">
+            <i class="material-icons">add_task</i> Input Sampling
+        </a>
+        <a class="nav-link" onclick="showTMKSearch()" id="menuTMK">
+            <i class="material-icons">history</i> Cari Riwayat TMK
+        </a>
+        <a class="nav-link" href="https://docs.google.com/spreadsheets/d/1XfaZIgQGlgr3r6-zBGdy0QeCiLD_iws8auUR00DWZfY/edit" target="_blank">
             <i class="material-icons">table_view</i> Database Mentah
         </a>
         <hr class="mx-3">
-        <a class="nav-link text-danger" onclick="window.close()"><i class="material-icons">power_settings_new</i> Keluar</a>
+        <a class="nav-link text-danger" onclick="window.close()">
+            <i class="material-icons">power_settings_new</i> Keluar
+        </a>
     </nav>
 </div>
 
 <div class="main-content">
     <div class="header-title">
-        <div><h2 class="fw-bold text-dark m-0">Form Renlak Kosmetik 2026</h2></div>
-        <button id="btnToggle" onclick="toggleSidebar()" title="Menu">
-            <i class="material-icons">menu</i>
-        </button>
+        <h2 class="fw-bold text-dark m-0" id="pageTitle">Form Renlak Kosmetik 2026</h2>
+        <button id="btnToggle" onclick="toggleSidebar()"><i class="material-icons">menu</i></button>
     </div>
 
-    <div class="form-card">
+    <div id="tmkContent" style="display:none;" class="card p-4 shadow-sm">
+        <h4 class="mb-4 text-primary"><span class="material-icons">search</span> Cari Riwayat TMK Produsen</h4>
+        <div class="input-group mb-3">
+            <input type="text" id="inputCariTMK" class="form-control" placeholder="Ketik minimal 2 huruf nama PT atau CV..." oninput="cariDataTMK()">
+            <button class="btn btn-primary" onclick="cariDataTMK()">Cari</button>
+        </div>
+        <hr>
+        <div id="hasilCariTMK">
+            <p class="text-muted italic text-center">Masukkan minimal 2 huruf untuk melihat riwayat pelanggaran.</p>
+        </div>
+    </div>
+
+    <div id="inputFormContent" class="form-card">
         <form id="kosmetikForm" class="row g-4">
             <div class="col-md-2">
                 <label>1. No (Auto)</label>
@@ -322,6 +284,255 @@
 </div>
 
 <script>
+    const dataTMK = [
+{ nama: "Agus Mira Mandiri Utama, PT", riwayat: "Asam tioglikolat (2023), Merkuri (2024)" },
+  { nama: "Akasha Wira International, PT", riwayat: "Mikroba (2022), Mikroba (2025)" },
+  { nama: "Alamanda Global Health, PT", riwayat: "Mikroba (2022), Mikroba (2025)" },
+  { nama: "Aleyah Sintasint Farma, PT", riwayat: "Mikroba (2024), Hidrokuinon (2025)" },
+  { nama: "Alfa Viktori Familia, PT", riwayat: "Metanol (2022), 1,4-Dioksan; Metanol; Mikroba; Pewarna (2023), Mikroba; Metanol; Pewarna (2024), Pewarna; Metanol (2025)" },
+  { nama: "Alfa Viva Famili, PT", riwayat: "Pewarna (2023), Mikroba (2024), Pewarna (2025)" },
+  { nama: "Alwinda Pratama Jaya, PT", riwayat: "Metanol (2022), Asam retinoat (2024), Asam retinoat; Steroid; Merkuri; Metanol (2025)" },
+  { nama: "Amanah Kosmetik Indonesia, PT", riwayat: "Asam retinoat; Steroid; Merkuri; Metanol (2025)" },
+  { nama: "Andara Cantika Indonesia, PT", riwayat: "Metanol (2024), Metanol (2025)" },
+  { nama: "Anjalis Group Indonesia, PT", riwayat: "Metanol (2024), Merkuri; Mikroba (2025)" },
+  { nama: "Aquila Magna, CV", riwayat: "Mikroba (2025)" },
+  { nama: "Arasy Cosmetindo, CV", riwayat: "Merkuri (2025)" },
+  { nama: "Arba'in Jaya Mandiri, CV", riwayat: "Mikroba (2022)" },
+  { nama: "Arundathi, CV", riwayat: "Mikroba (2025)" },
+  { nama: "Aryati, CV", riwayat: "Mikroba (2025)" },
+  { nama: "Asfindo Barakah Mandiri, PT", riwayat: "Metanol (2023), Metanol (2024), Patogen (2025)" },
+  { nama: "Asia Chemic Indonusa, PT", riwayat: "Metanol (2024)" },
+  { nama: "Asia Skinlab, CV", riwayat: "Mikroba (2022), Mikroba (2023), Metanol (2024), Mikroba (2025)" },
+  { nama: "Astagina, CV", riwayat: "Mikroba (2024), Metanol (2025)" },
+  { nama: "Athena Royal Kosmetika, PT", riwayat: "Metanol (2024), Metanol (2025)" },
+  { nama: "Aulia Citra Lestari, PT", riwayat: "Merkuri (2022)" },
+  { nama: "Aulia Cosmetic Indonesia, PT", riwayat: "Mikroba (2022), Mikroba (2023), Asam retinoat; Triklosan; Mikroba (2024), Mikroba (2025)" },
+  { nama: "Avicenna Sanjaya, CV", riwayat: "Mikroba (2025)" },
+  { nama: "Ayara Beauty Indonesia, PT", riwayat: "Mikroba (2023), Mikroba (2025)" },
+  { nama: "Ayu Jaya Lestari, PT", riwayat: "Metanol (2022), Metanol (2023), Metanol (2024)" },
+  { nama: "Ayu Naturally Cemerlang, PT", riwayat: "Mikroba (2023)" },
+  { nama: "Azzwars Perfume", riwayat: "Metanol (2023)" },
+  { nama: "Bali Alus, PT", riwayat: "Timbal (2022)" },
+  { nama: "Bali Radiance, PT", riwayat: "Mikroba (2024)" },
+  { nama: "Barclay Products, PT", riwayat: "Mikroba (2023), Merkuri; Arsen (2025)" },
+  { nama: "Batara Bayu Buana, CV", riwayat: "Asam retinoat (2024)" },
+  { nama: "Beauty Source Indonesia, PT", riwayat: "Pewarna; Arsen; Timbal (2025)" },
+  { nama: "Belle Amanah Sejahtera, PT", riwayat: "Metanol; Mikroba (2022)" },
+  { nama: "Bening's Clinic", riwayat: "Metanol (2023), Hidrokuinon (2024), Hidrokuinon; Metanol; Mikroba (2025)" },
+  { nama: "Berlian Kosmetik, CV", riwayat: "Hidrokuinon; Asam retinoat; Merkuri (2023)" },
+  { nama: "Berlian Kosmetika Manufaktur, PT", riwayat: "Hidrokuinon (2024)" },
+  { nama: "Bina Karya Prima, PT", riwayat: "Mikroba (2025)" },
+  { nama: "Bucar Megatama Kosmetika, PT", riwayat: "Mikroba (2024)" },
+  { nama: "Budi Andhika, PT", riwayat: "Metanol (2024)" },
+  { nama: "Bungan Jepun, UD", riwayat: "Mikroba (2023)" },
+  { nama: "Cahaya Asia Gemilang, PT", riwayat: "Mikroba (2025)" },
+  { nama: "Cahaya Multi Mandiri, CV", riwayat: "Mikroba (2023)" },
+  { nama: "Cakra Daya Makmur, PT", riwayat: "Mikroba (2022), Patogen (2025)" },
+  { nama: "Cantik Jelita, CV", riwayat: "Mikroba (2023), Mikroba (2024)" },
+  { nama: "Catel, CV", riwayat: "Pewarna; Arsen (2025)" },
+  { nama: "Chavasindo Jaya, CV", riwayat: "Mikroba (2022), Metanol (2024)" },
+  { nama: "Cipta Anugerah Bakti Mandiri, PT", riwayat: "Merkuri (2023), Mikroba (2025)" },
+  { nama: "Citra Ayu Bali, UD", riwayat: "Mikroba (2024)" },
+  { nama: "Citra Kosmetika Industri, PT", riwayat: "Metanol (2022), Metanol (2024)" },
+  { nama: "Citra Marvella, CV", riwayat: "Metanol (2024)" },
+  { nama: "Continental Cosmetic, PT", riwayat: "Mikroba (2022)" },
+  { nama: "Cosline Pasifik Indonesia, PT", riwayat: "Pewarna (2025)" },
+  { nama: "Cosmax Indonesia, PT", riwayat: "Metanol (2023), Metanol (2024)" },
+  { nama: "Cosmetindo Global Internasional, PT", riwayat: "Merkuri (2025)" },
+  { nama: "Cosmolab Prima, PT", riwayat: "Pewarna (2022), Pewarna (2023), Pewarna (2025)" },
+  { nama: "Cosmotech Multi Mandiri, PT", riwayat: "Hidrokuinon (2024), Mikroba (2025)" },
+  { nama: "Cressindo Kusuma, PT", riwayat: "Mikroba (2024)" },
+  { nama: "Crush Global Indonesia, PT", riwayat: "Mikroba (2022)" },
+  { nama: "Deavy Bening Cipta, CV", riwayat: "Mikroba (2025)" },
+  { nama: "Derma Beauty Indonesia", riwayat: "Hidrokuinon (2025)" },
+  { nama: "Derma Elok Farma, PT", riwayat: "Asam retinoat; Klindamisin; Steroid; Merkuri (2025)" },
+  { nama: "Dermixora Morsa Asia, PT", riwayat: "Mikroba (2024)" },
+  { nama: "Dian Indah Abadi, CV", riwayat: "Metanol (2022)" },
+  { nama: "Dion Farma Abadi, PT", riwayat: "Metanol (2025)" },
+  { nama: "Diva Asia Kosmetika, PT", riwayat: "Asam retinoat (2023), Asam retinoat (2024)" },
+  { nama: "Dobha Putra Salim, PT", riwayat: "Metanol (2025)" },
+  { nama: "Dua Naga Kosmetindo, PT", riwayat: "Mikroba (2022)" },
+  { nama: "Dunia Cantik Indonesia, PT", riwayat: "Pewarna (2025)" },
+  { nama: "Dunia Sehat Sejahtera, PT", riwayat: "Merkuri (2023)" },
+  { nama: "Duta Jaya Makmur, CV", riwayat: "Metanol; Mikroba (2022), Merkuri; Metanol (2025)" },
+  { nama: "Dutry Saputra Abadi, PT", riwayat: "Mikroba (2023)" },
+  { nama: "Dwi Mitra Perkasa, CV", riwayat: "Pewarna (2023), Pewarna (2025)" },
+  { nama: "Elshe Estetika Nusantara, PT", riwayat: "Mikroba (2025)" },
+  { nama: "Enerel Kosmetik, CV", riwayat: "Merkuri; Hidrokuinon (2023), Hidrokuinon (2024)" },
+  { nama: "Enerel Kosmetika Biotech, PT", riwayat: "Mikroba (2024)" },
+  { nama: "Equity Cosmindo Biotech, PT", riwayat: "Merkuri (2022)" },
+  { nama: "Erfi Karya Abadi, PT", riwayat: "Hidrokuinon; Metanol (2022)" },
+  { nama: "Eropa Fragance Indonesia, PT", riwayat: "Metanol (2024)" },
+  { nama: "Eskol Surya Anugerah, PT", riwayat: "Mikroba (2022)" },
+  { nama: "Essenza Natural Indonesia, PT", riwayat: "Metanol (2024)" },
+  { nama: "Estee Internasional Kosmetika, PT", riwayat: "Merkuri (2025)" },
+  { nama: "Estetika Medika Utama, PT", riwayat: "Mikroba (2025)" },
+  { nama: "Etercon Pharma, PT", riwayat: "Mikroba (2023)" },
+  { nama: "Eva Prima Cosmetic, UD", riwayat: "Mikroba (2023), Metanol; Mikroba (2025)" },
+  { nama: "Fabindo Sejahtera, PT", riwayat: "Pengawet (2024)" },
+  { nama: "FCL Internasional Indonesia, PT", riwayat: "Pewarna (2024), Pewarna; Arsen (2025)" },
+  { nama: "Feali Internasional Indonesia, PT", riwayat: "Metanol (2024)" },
+  { nama: "Flower Beauty Corp, CV", riwayat: "Mikroba (2025)" },
+  { nama: "Followme Indonesia, PT", riwayat: "Metanol (2022)" },
+  { nama: "Fonda Mas, UD", riwayat: "Pewarna; Metanol (2022), Metanol (2023)" },
+  { nama: "Formula Jelita Internasional, PT", riwayat: "Mikroba (2022)" },
+  { nama: "Galuh Chandra Kirana, CV", riwayat: "Mikroba (2024)" },
+  { nama: "Galuh Licin, UD", riwayat: "Mikroba (2022), Mikroba (2023), Mikroba (2024), Mikroba (2025)" },
+  { nama: "Gautama Indah Perkasa, PT", riwayat: "Mikroba (2024), Mikroba; Timbal (2025)" },
+  { nama: "Gemilang, CV", riwayat: "Hidrokuinon; Metanol (2022), Hidrokuinon; Asam retinoat (2024), Hidrokuinon; Asam retinoat; Patogen (2025)" },
+  { nama: "Gemilang Ayu Perdana, PT", riwayat: "Mikroba (2025)" },
+  { nama: "Gerasia", riwayat: "Mikroba (2025)" },
+  { nama: "Global Estetik Medika, PT", riwayat: "Mikroba (2025)" },
+  { nama: "Gloria Origita Cosmetics, PT", riwayat: "Timbal (2023), Mikroba (2024), Pewarna (2025)" },
+  { nama: "Grasse Parfume, PT", riwayat: "Metanol (2024)" },
+  { nama: "Hafabi, UD", riwayat: "Mikroba (2022), Mikroba (2023), Mikroba (2024)" },
+  { nama: "Hana Cosmetic, UD", riwayat: "Mikroba (2022), Mikroba (2025)" },
+  { nama: "Harith Sinergi Mulia, CV", riwayat: "Merkuri (2022)" },
+  { nama: "Hasanayu Putri Jelita, PT", riwayat: "Mikroba (2025)" },
+  { nama: "Hebe Beauty Style, PT", riwayat: "Mikroba (2024), Pewarna; Oktil Metoksi Sinamat (2025)" },
+  { nama: "Her Bayu Inti, PT", riwayat: "Asam retinoat; Hidrokuinon (2025)" },
+  { nama: "Herlina Indah, CV", riwayat: "Mikroba (2025)" },
+  { nama: "Idlan Waranie Perkasa, CV", riwayat: "Pengawet; Mikroba (2022), Mikroba (2025)" },
+  { nama: "Immortal Cosmedika Indonesia, PT", riwayat: "Mikroba (2022), Mikroba (2024), Mikroba (2025)" },
+  { nama: "Implora Sukses Abadi, PT", riwayat: "Mikroba (2022), Pewarna; Arsen (2025)" },
+  { nama: "Indah, UD", riwayat: "Mikroba (2025)" },
+  { nama: "Indah Mulia Abadi, CV", riwayat: "Arsen (2025)" },
+  { nama: "Indo Galuh Utama, PT", riwayat: "Metanol (2025)" },
+  { nama: "Indo Online Pratama, PT", riwayat: "Arsen (2025)" },
+  { nama: "Innova Kosmetik Indonesia, PT", riwayat: "Metanol (2022), Metanol (2024)" },
+  { nama: "Inticosmetic Lestari, PT", riwayat: "Mikroba (2024), Mikroba (2025)" },
+  { nama: "Javinci Berkat Kreatif Sentosa, PT", riwayat: "Pengawet (2024)" },
+  { nama: "Jaya Wangi, UD", riwayat: "Metanol (2022), Metanol (2023), Metanol (2024)" },
+  { nama: "Jelita Kosmetik, CV", riwayat: "Pewarna (2022)" },
+  { nama: "Jenny Cosmetics, PT", riwayat: "Mikroba (2025)" },
+  { nama: "Jensina Estetika, CV", riwayat: "Mikroba (2025)" },
+  { nama: "JJ Top Cosmindo Jaya, UD", riwayat: "Mikroba (2024)" },
+  { nama: "Joya Hougan Lestari, PT", riwayat: "Oktil metoksi sinamat; Butil metoksi dibenzoil metan; Oktil salisilat (2025)" },
+  { nama: "Kaizen Aesthetic Medicore, PT", riwayat: "Mikroba; Asam salisilat (2023), Mikroba (2024)" },
+  { nama: "Kaleido Kosmetik Internasional, PT", riwayat: "Merkuri (2023)" },
+  { nama: "Kalista Pesona Natur, PT", riwayat: "Mikroba (2024)" },
+  { nama: "Karya Iwin Insani, CV", riwayat: "Mikroba (2023)" },
+  { nama: "Kitoshindo International Biotech PT", riwayat: "Mikroba (2022)" },
+  { nama: "Klinik Permata Hati, CV", riwayat: "Merkuri; Minoksidil; Mikroba (2022)" },
+  { nama: "Kosmetika Global Indonesia, PT", riwayat: "Oksibenzon (2022)" },
+  { nama: "Kosmetikatama Super Indah, PT", riwayat: "Asam retinoat; Hidrokuinon; Merkuri (2024)" },
+  { nama: "L'Oreal Indonesia, PT", riwayat: "Asam retinoat (2023)" },
+  { nama: "Langit Citra Nusantara, PT", riwayat: "Mikroba (2023)" },
+  { nama: "Laras Natura, CV", riwayat: "Merkuri (2022), Metanol; Mikroba (2024)" },
+  { nama: "Larassanti Makmur Sejahtera, PT", riwayat: "Metanol (2024)" },
+  { nama: "Latisha Derma Kosmetik, PT", riwayat: "Mikroba (2024)" },
+  { nama: "Lawu Flora Wijaya, PT", riwayat: "Metanol (2023)" },
+  { nama: "Leonathan Sukses Mandiri, PT", riwayat: "Mikroba (2024)" },
+  { nama: "Levederm Aesthetic Clinic", riwayat: "Metanol (2023), Metanol (2024)" },
+  { nama: "Lapwih Synergylab Estetika, PT", riwayat: "Mikroba (2023)" },
+  { nama: "Lulur Sari Pengantin, UD", riwayat: "Mikroba (2023), Mikroba (2024)" },
+  { nama: "Lulur Timung Kiara", riwayat: "Mikroba (2024)" },
+  { nama: "Magicskin, CV", riwayat: "Mikroba (2024)" },
+  { nama: "Mahar Dharma Putri, PT", riwayat: "Metanol (2022), Mikroba (2024)" },
+  { nama: "Maia Natural, CV", riwayat: "Timbal (2022)" },
+  { nama: "Mandom Indonesia Tbk, PT", riwayat: "Triklosan (2023), Timbal (2024)" },
+  { nama: "Martina Berto Tbk, PT", riwayat: "Mikroba (2022)" },
+  { nama: "Metro Cosmetic Indonesia, CV", riwayat: "Mikroba (2023), Mikroba (2024)" },
+  { nama: "Miracle Bio Cosmetica Laboratories, CV", riwayat: "Asam retinoat; Metanol (2022), Mikroba (2023), Mikroba (2024)" },
+  { nama: "Miswak Utama, PT", riwayat: "Mikroba (2024)" },
+  { nama: "Mitha Skincare, CV", riwayat: "Metanol; Mikroba (2024)" },
+  { nama: "Mitra Bersama Jaya, PT", riwayat: "Triklorokarbanilida (2024)" },
+  { nama: "Motto Beringin Abadi, PT", riwayat: "Mikroba (2022), Mikroba (2023), Mikroba (2024), Metanol (2025)" },
+  { nama: "Mount Hermon Laboratories, CV", riwayat: "Metanol (2022), Mikroba (2024)" },
+  { nama: "Mulei Puspita Indonesia, PT", riwayat: "Mikroba (2023)" },
+  { nama: "Mulia Kairos Industri, PT", riwayat: "Metanol (2022)" },
+  { nama: "Multi Prestasi Mas, PT", riwayat: "Mikroba (2024)" },
+  { nama: "Multi Produk Indonesia, PT", riwayat: "Mikroba (2024)" },
+  { nama: "Mustika Ratu, PT", riwayat: "Mikroba (2022), Mikroba (2024)" },
+  { nama: "Mustika Satya Nusantara, PT", riwayat: "Pewarna (2022)" },
+  { nama: "Mustika Wangi, UD", riwayat: "Metanol (2022), Metanol (2023), Metanol (2024)" },
+  { nama: "Namo Natural Indonesia, PT", riwayat: "Mikroba (2022), Pewarna (2024)" },
+  { nama: "Natura Deca Kosmetika, PT", riwayat: "Oktil Salisilat; Mikroba (2024)" },
+  { nama: "Nayue Kosmetik Indonesia, PT", riwayat: "Mikroba (2022)" },
+  { nama: "Neo Kosmetika Industri, PT", riwayat: "Mikroba (2022)" },
+  { nama: "New Total, PD", riwayat: "Mikroba (2022)" },
+  { nama: "Nosin Indonesia, CV", riwayat: "Steroid (2025)" },
+  { nama: "NR Herbal Care, CV", riwayat: "Metanol; Mikroba (2022), Mikroba (2024), Hidrokuinon; Mikroba (2025)" },
+  { nama: "NSH Azizah Beauty, CV", riwayat: "Mikroba (2023), Mikroba (2024)" },
+  { nama: "Paris Varnjapa Lampung, CV", riwayat: "Metanol (2023)" },
+  { nama: "Pesona Mahameru, PT", riwayat: "Mikroba (2023)" },
+  { nama: "Pillars Cosmetiklon Indonesia, FT", riwayat: "Mikroba (2022), Mikroba (2023)" },
+  { nama: "Poedji Anugerah Sejahtera, PT", riwayat: "Mikroba (2022)" },
+  { nama: "Poly Usaha Sejati, PT", riwayat: "Merkuri (2024)" },
+  { nama: "Prima Mandiri Estetika, PT", riwayat: "Mikroba (2025)" },
+  { nama: "Prioritas Jaya Indonesia, PT", riwayat: "Metanol; Mikroba (2022), Mikroba (2023), Metanol (2024), Mikroba (2025)" },
+  { nama: "Proderma Sukses Mandiri, PT", riwayat: "Metanol (2022), Metanol (2023)" },
+  { nama: "Pulchra Anugerah Sentosa, PT", riwayat: "Mikroba (2022), Metanol; Mikroba (2024), Mikroba (2025)" },
+  { nama: "Pulung Jaya Selaju, CV", riwayat: "Mikroba (2024)" },
+  { nama: "Pupur Bunga Tanjung, UD", riwayat: "Mikroba (2023), Mikroba (2024), Mikroba (2025)" },
+  { nama: "Pureo Kosmetik Masindo, PT", riwayat: "Asam retinoat; Mikroba (2024), Asam retinoat (2025)" },
+  { nama: "Puteri Rinjani, CV", riwayat: "Mikroba (2022)" },
+  { nama: "Putikayo International, PT", riwayat: "Metanol (2024)" },
+  { nama: "Putra Bumi Yusuf, PT", riwayat: "Mikroba (2024)" },
+  { nama: "Putra Mandiri, CV", riwayat: "Pewarna (2025)" },
+  { nama: "Putra Perkasa, PD", riwayat: "Mikroba (2022)" },
+  { nama: "Ratansha Purnama Abadi, PT", riwayat: "Asam retinoat (2024)" },
+  { nama: "Ratih Kreasi Group, CV", riwayat: "Mikroba (2025)" },
+  { nama: "RDL Distribusi Indonesia, PT", riwayat: "Asam retinoat; Hidrokuinon (2023), Metanol (2024)" },
+  { nama: "Rembaka, PT", riwayat: "Asam retinoat (2024)" },
+  { nama: "Resik Mitra Anugerah, PT", riwayat: "Asam retinoat (2023), Deksametason; Asam retinoat (2024)" },
+  { nama: "Reyasa Nandamar Indah, CV", riwayat: "Mikroba (2025)" },
+  { nama: "Rezky Jaya Borneo, CV", riwayat: "Mikroba (2023), Mikroba (2024)" },
+  { nama: "Rias Maju Sejahtera, CV", riwayat: "Pewarna (2022), Timbal (2023), Timbal (2024), Pewarna (2025)" },
+  { nama: "Rohto Laboratories Indonesia, PT", riwayat: "Mikroba (2024), 1,4-Dioksan (2025)" },
+  { nama: "Romos Inti Cosmetic Industries, PT", riwayat: "Asam tioglikolat (2024)" },
+  { nama: "RRA Ratu Beauty, PT", riwayat: "Mikroba (2025)" },
+  { nama: "Rudy Soetadi, PT", riwayat: "Merkuri (2025)" },
+  { nama: "Sagara Purnama, PT", riwayat: "Asam retinoat; Hidrokuinon; Mikroba (2024)" },
+  { nama: "Sandrica Beauty Derma, PT", riwayat: "Metanol (2022), Asam retinoat; Hidrokuinon (2023), Steroid; Asam retinoat; Hidrokuinon (2024), Steroid; Asam retinoat; Hidrokuinon (2025)" },
+  { nama: "Sarana Inter Cosindo, PT", riwayat: "Mikroba (2024)" },
+  { nama: "Satya Pranata Jaya, PT", riwayat: "Metanol (2022), Metanol (2023), Metanol (2024)" },
+  { nama: "Sejahtera Baru, UD", riwayat: "Metanol (2022), Metanol (2023)" },
+  { nama: "Sekar Jagat, UD", riwayat: "Mikroba (2022), Mikroba (2023), Mikroba (2024), Mikroba (2025)" },
+  { nama: "Sekar Jawi, UD", riwayat: "Mikroba (2022), Mikroba (2024)" },
+  { nama: "Sekar Sari Alam, PT", riwayat: "Mikroba (2025)" },
+  { nama: "Sekawan, CV", riwayat: "Triklosan; Mikroba (2022)" },
+  { nama: "Selamat Makmur, PT", riwayat: "Pewarna (2022), Pewarna; Timbal; Mikroba (2023)" },
+  { nama: "Semarak Sukha, PT", riwayat: "Metanol (2024), Oktil salisilat (2025)" },
+  { nama: "Semeloto, UD", riwayat: "Mikroba (2022)" },
+  { nama: "Sidomukti Megah Perkasa, PT", riwayat: "Metanol; Mikroba (2022), Mikroba (2024)" },
+  { nama: "Sinar Antjol, PT", riwayat: "Asam retinoat; Hidrokuinon; Merkuri; Pewarna; Steroid (2025)" },
+  { nama: "Sinergi Integra Prima, PT", riwayat: "Mikroba (2025)" },
+  { nama: "Siwak Utama, PT", riwayat: "Mikroba (2023)" },
+  { nama: "SJA Global Cosmindo, PT", riwayat: "Mikroba (2022)" },
+  { nama: "Skin Kosmetika Chandra, CV", riwayat: "Mikroba (2024), Mikroba (2025)" },
+  { nama: "Sri Tanjung, PO", riwayat: "Metanol; Mikroba (2023)" },
+  { nama: "Star Abadi Ratu Indonesia, PT", riwayat: "Mikroba (2024), Mikroba (2025)" },
+  { nama: "STC Sarana Estetika, PT", riwayat: "Mikroba (2024), Mikroba (2025)" },
+  { nama: "Sukma Skin Treatment, PT", riwayat: "Pewarna (2025)" },
+  { nama: "Sumber Aroma Baru, PT", riwayat: "Metanol (2024)" },
+  { nama: "Sunggal Inti Makmur, PT", riwayat: "Metanol (2022), Metanol (2024), Mikroba (2025)" },
+  { nama: "Surya Dermato Medica Laboratories, PT", riwayat: "Mikroba; Metanol (2024), Metanol (2025)" },
+  { nama: "Syradz Indo Global, CV", riwayat: "Metanol (2023)" },
+  { nama: "Team Rumah Cantik Bintan, PT", riwayat: "Merkuri; Mikroba (2023)" },
+  { nama: "Tempo Utama Sejahtera, PT", riwayat: "Mikroba (2022), Metanol (2024)" },
+  { nama: "Tjhindatama Mulia, PT", riwayat: "Pewarna (2022), Pewarna; Mikroba (2025)" },
+  { nama: "Tri Putri Ayu, PD", riwayat: "Mikroba (2022), Mikroba (2025)" },
+  { nama: "Tritunggal Sinarjaya, PT", riwayat: "Mikroba (2025)" },
+  { nama: "UICCP Indonesia, PT", riwayat: "Merkuri (2025)" },
+  { nama: "United Farmatic Indonesia, PT", riwayat: "Oktil salisilat (2025)" },
+  { nama: "Urban Indo Manufaktur, PT", riwayat: "Metanol (2022), Mikroba (2023)" },
+  { nama: "Usaha Mandiri Makmur, PT", riwayat: "Mikroba (2025)" },
+  { nama: "Usaha Sekawan Farmasi, PT", riwayat: "Asam salisilat (2025)" },
+  { nama: "Varia Niaga Sukses, PT", riwayat: "Pengawet (2024), Pengawet; Mikroba (2025)" },
+  { nama: "Vavindo Global Kosmetika, PT", riwayat: "Merkuri (2023)" },
+  { nama: "Victoria Care Indonesia, PT", riwayat: "Mikroba (2022), Mikroba (2023), Pengawet; Mikroba (2024)" },
+  { nama: "Vitapharm, PT", riwayat: "Timbal (2022), Timbal (2023)" },
+  { nama: "Wahana Kosmetika Indonesia, PT", riwayat: "Mikroba (2022), Metanol (2024)" },
+  { nama: "Young Kosmetikindo, CV", riwayat: "Mikroba (2022), Mikroba (2023), Mikroba (2025)" },
+  { nama: "Yubina Clinic", riwayat: "Asam retinoat (2025)" },
+  { nama: "ZN Zayan Glow Skincare", riwayat: "Asam retinoat (2024)" },
+  { nama: "Zoey Cosmedika Putra, PT", riwayat: "Asam retinoat; Flucinolon; Hidrokuinon (2025)" },
+  { nama: "Zogi Cosmeceutical, PT", riwayat: "Mikroba (2023)" },
+  { nama: "Zweena Adi Nugraha, CV", riwayat: "Mikroba (2023), Mikroba (2024)" }
+
+    ];
+
     const dataKategori = {
         "Kosmetik Beresiko Tinggi": ["Sediaan bayi", "Sediaan perawatan wajah", "krim siang", "krim malam", "Pelembab/ Moisturiser", "Sediaan rias mata", "Eye shadow", "Pensil alis", "Mascara", "Sediaan rias wajah (perona pipi)", "Sediaan rias bibir (lip color)", "Sediaan parfum (eau de cologne)", "Sediaan pewarna kuku"],
         "Kosmetik dengan riwayat Tidak Memenuhi Syarat": ["Sediaan untuk alis (pensil alis)", "Eye shadow", "Eye liner", "Blush on", "Bedak padat/ compact powder", "Pembersih kulit muka", "Mascara", "Eye Make Up Remover", "Penyegar kulit muka/toner", "Lip colour, Lip liner, Lip glos, Lip care", "Pewarna kuku", "Sediaan parfum (eau de cologne)", "Krim pencerah/Skin lightener", "Eau de Toilette/ Eau de Parfume/ Eau de Cologne/ Parfume", "krim siang", "krim malam", "Sediaan tabir surya"],
@@ -335,8 +546,7 @@
         "Kosmetik viral": ["Lip colour, Lip liner, Lip glos, Lip care", "Skin aging product", "Day Cream", "Night Cream", "Pelembab/ Moisturiser"],
         "Kosmetik di online official store/reseller": ["Lip colour, Lip liner, Lip glos, Lip care", "Skin aging product", "Day Cream", "Night Cream", "Pelembab/ Moisturiser"]
     };
-
-    // ============================================
+// ============================================
     // TOGGLE SIDEBAR MOBILE
     // ============================================
     function toggleSidebar() {
@@ -383,22 +593,7 @@
 
     window.onload = setupAuto;
 
-    // ============================================
-    // TRIGGER AUTO HIDE SAAT BLUR NAMA PRODUK
-    // ============================================
-    function triggerAutoHide() {
-        const hideUrl = 'https://script.google.com/macros/s/AKfycbxsE2R4nWkEvscA4k8_DXski3T1TfheJ9E5Lmhui6QcCISwukmJa0R9l6ziLStTNHXK/exec';
-        
-        fetch(hideUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify({ action: 'hideRows' })
-        })
-        .then(() => console.log("Auto hide processed"))
-        .catch(err => console.log("Auto hide error:", err));
-    }
-
-    // ============================================
+// ============================================
     // FORM SUBMIT & KIRIM DATA
     // ============================================
     document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
@@ -441,6 +636,93 @@
             btn.innerText = "KIRIM DATA KOSMETIK";
         });
     });
+
+//CARI DATA TMK
+
+    function cariDataTMK() {
+        const input = document.getElementById("inputCariTMK");
+        const keyword = input.value.toLowerCase();
+        const container = document.getElementById("hasilCariTMK");
+
+        if (keyword.length < 2) {
+            container.innerHTML = '<p class="text-muted italic text-center">Masukkan minimal 2 huruf...</p>';
+            return;
+        }
+
+        const hasil = dataTMK.filter(item => item.nama.toLowerCase().includes(keyword));
+
+        if (hasil.length === 0) {
+            container.innerHTML = '<div class="alert alert-success text-center">Tidak ditemukan riwayat TMK</div>';
+            return;
+        }
+
+        let html = '<div class="list-group">';
+        hasil.forEach(item => {
+            html += `
+                <div class="list-group-item list-group-item-action mb-2 border-start border-danger border-4 shadow-sm" 
+                     onclick="pilihProdusen('${item.nama.replace(/'/g, "\\'")}')" style="cursor:pointer">
+                    <h6 class="mb-1 fw-bold text-danger">${item.nama}</h6>
+                    <p class="mb-0 text-muted small"><strong>Riwayat:</strong> ${item.riwayat}</p>
+                </div>`;
+        });
+        html += '</div>';
+        container.innerHTML = html;
+    }
+
+    function pilihProdusen(nama) {
+        document.getElementById('inputCariTMK').value = nama;
+        // Opsional: Langsung isi ke form input
+        document.getElementById('namaProduk').value = "[TMK] " + nama + " - ";
+        alert("Produsen dipilih. Silakan lengkapi data produk di form input.");
+        showForm();
+    }
+
+    function showTMKSearch() {
+        document.getElementById("tmkContent").style.display = "block";
+        document.getElementById("inputFormContent").style.display = "none";
+        document.getElementById("menuTMK").classList.add("active");
+        document.getElementById("menuInput").classList.remove("active");
+        document.getElementById("pageTitle").innerText = "Riwayat TMK Produsen";
+    }
+
+    function showForm() {
+        document.getElementById("tmkContent").style.display = "none";
+        document.getElementById("inputFormContent").style.display = "block";
+        document.getElementById("menuInput").classList.add("active");
+        document.getElementById("menuTMK").classList.remove("active");
+        document.getElementById("pageTitle").innerText = "Form Renlak Kosmetik 2026";
+    }
+
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const main = document.querySelector('.main-content');
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('show');
+            document.getElementById('overlay').classList.toggle('active');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            main.classList.toggle('expanded');
+        }
+    }
+
+    function updateSubKategori() {
+        const kat = document.getElementById("kategori").value;
+        const subKat = document.getElementById("subKategori");
+        subKat.innerHTML = '<option value="" disabled selected>Pilih Sub Kategori...</option>';
+        if (dataKategori[kat]) {
+            dataKategori[kat].forEach(item => {
+                let opt = document.createElement("option");
+                opt.value = item; opt.innerHTML = item;
+                subKat.appendChild(opt);
+            });
+        }
+    }
+
+    window.onload = function() {
+        const d = new Date();
+        document.getElementById('tglSampling').value = d.toLocaleString('id-ID');
+        document.getElementById('bulanAuto').value = d.getMonth() + 1;
+    };
 </script>
 
 </body>
