@@ -707,6 +707,7 @@
         document.getElementById("pageTitle").innerText = "Riwayat TMK Produsen";
         resetActiveMenu();
         document.getElementById("menuTMK").classList.add("active");
+        if (window.innerWidth <= 768) toggleSidebar();
     }
 
     function showForm() {
@@ -716,6 +717,7 @@
         document.getElementById("pageTitle").innerText = "Form Renlak Kosmetik 2026";
         resetActiveMenu();
         document.getElementById("menuInput").classList.add("active");
+        if (window.innerWidth <= 768) toggleSidebar();
     }
 
     function tampilkanPanduanSampel() {
@@ -725,6 +727,7 @@
         document.getElementById("pageTitle").innerText = "Panduan Jumlah Sampel";
         resetActiveMenu();
         document.getElementById("menuPanduan").classList.add("active");
+        if (window.innerWidth <= 768) toggleSidebar();
     }
 
     function resetActiveMenu() {
