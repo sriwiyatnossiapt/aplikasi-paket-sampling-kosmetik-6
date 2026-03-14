@@ -75,7 +75,7 @@
             margin-left: 0;
         }
         
-        .form-card { 
+        .form-card, .card { 
             background: var(--blue-grey-soft); 
             padding: 35px; 
             border-radius: 15px; 
@@ -167,6 +167,9 @@
         <a class="nav-link" onclick="showTMKSearch()" id="menuTMK">
             <i class="material-icons">history</i> Cari Riwayat TMK
         </a>
+        <a class="nav-link" onclick="tampilkanPanduanSampel()" id="menuPanduan">
+            <i class="material-icons">rule</i> Panduan Jumlah Sampel
+        </a>
         <a class="nav-link" href="https://docs.google.com/spreadsheets/d/1XfaZIgQGlgr3r6-zBGdy0QeCiLD_iws8auUR00DWZfY/edit" target="_blank">
             <i class="material-icons">table_view</i> Database Mentah
         </a>
@@ -177,13 +180,13 @@
     </nav>
 </div>
 
-<div class="main-content">
+<div class="main-content" id="main-content">
     <div class="header-title">
         <h2 class="fw-bold text-dark m-0" id="pageTitle">Form Renlak Kosmetik 2026</h2>
         <button id="btnToggle" onclick="toggleSidebar()"><i class="material-icons">menu</i></button>
     </div>
 
-    <div id="tmkContent" style="display:none;" class="card p-4 shadow-sm">
+    <div id="tmkContent" style="display:none;" class="card p-4 shadow-sm mb-4">
         <h4 class="mb-4 text-primary"><span class="material-icons">search</span> Cari Riwayat TMK Produsen</h4>
         <div class="input-group mb-3">
             <input type="text" id="inputCariTMK" class="form-control" placeholder="Ketik minimal 2 huruf nama PT atau CV..." oninput="cariDataTMK()">
@@ -192,6 +195,44 @@
         <hr>
         <div id="hasilCariTMK">
             <p class="text-muted italic text-center">Masukkan minimal 2 huruf untuk melihat riwayat pelanggaran.</p>
+        </div>
+    </div>
+
+    <div id="guideContent" style="display:none;" class="card p-4 shadow-sm mb-4">
+        <h4 class="mb-4 text-primary"><span class="material-icons">straighten</span> Panduan Jumlah Pengambilan Sampel</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover bg-white">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>Kategori</th>
+                        <th>Parameter Kimia</th>
+                        <th>Parameter Mikro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr><td>Lipstik/Lipglos/Lipcare</td><td>16 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Blush On</td><td>16 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Eye Shadow</td><td>16 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Bedak Padat/Powder</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Pembersih Muka</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Penyegar Muka</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Hand & Body Lot</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Shampo</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Sabun mandi</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Sed Bayi Lainnya</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Parfum/Cologne</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Krim Malam</td><td>50 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Krim Siang</td><td>50 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Pelembab</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Mascara</td><td>16 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Pewarna Kuku</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Skin Lightener</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Pewarna Rambut</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Masker Wajah</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Deodorant</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                <tr><td>Anti Jerawat</td><td>6 Kmsn @ 10gr</td><td>1 kmsn min 10gr</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -216,10 +257,7 @@
 
             <div class="col-md-6">
                 <label>3. Nama Produk</label>
-                <input type="text" id="namaProduk" class="form-control" 
-                       placeholder="Nama produk kosmetik" 
-                       onblur="triggerAutoHide()" 
-                       required>
+                <input type="text" id="namaProduk" class="form-control" placeholder="Nama produk kosmetik" required>
             </div>
             <div class="col-md-6">
                 <label>4. Kategori</label>
@@ -285,7 +323,7 @@
 
 <script>
     const dataTMK = [
-{ nama: "Agus Mira Mandiri Utama, PT", riwayat: "Asam tioglikolat (2023), Merkuri (2024)" },
+        { nama: "Agus Mira Mandiri Utama, PT", riwayat: "Asam tioglikolat (2023), Merkuri (2024)" },
   { nama: "Akasha Wira International, PT", riwayat: "Mikroba (2022), Mikroba (2025)" },
   { nama: "Alamanda Global Health, PT", riwayat: "Mikroba (2022), Mikroba (2025)" },
   { nama: "Aleyah Sintasint Farma, PT", riwayat: "Mikroba (2024), Hidrokuinon (2025)" },
@@ -545,29 +583,23 @@
         "Kosmetik yang diduga mengandung DNA porcine": ["pelembam/moisturizer"],
         "Kosmetik viral": ["Lip colour, Lip liner, Lip glos, Lip care", "Skin aging product", "Day Cream", "Night Cream", "Pelembab/ Moisturiser"],
         "Kosmetik di online official store/reseller": ["Lip colour, Lip liner, Lip glos, Lip care", "Skin aging product", "Day Cream", "Night Cream", "Pelembab/ Moisturiser"]
+
     };
-// ============================================
-    // TOGGLE SIDEBAR MOBILE
-    // ============================================
+
     function toggleSidebar() {
         const sidebar = document.querySelector('.sidebar');
         const mainContent = document.querySelector('.main-content');
         const overlay = document.getElementById('overlay');
         
         if (window.innerWidth <= 768) {
-            // Mobile: toggle show/hide
             sidebar.classList.toggle('show');
             overlay.classList.toggle('active');
         } else {
-            // Desktop: toggle collapsed
             sidebar.classList.toggle('collapsed');
             mainContent.classList.toggle('expanded');
         }
     }
 
-    // ============================================
-    // UPDATE SUB KATEGORI
-    // ============================================
     function updateSubKategori() {
         const kat = document.getElementById("kategori").value;
         const subKat = document.getElementById("subKategori");
@@ -582,20 +614,14 @@
         }
     }
 
-    // ============================================
-    // GENERATE TIMESTAMP & BULAN OTOMATIS
-    // ============================================
     function setupAuto() {
         const d = new Date();
-        document.getElementById('tglSampling').value = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+        document.getElementById('tglSampling').value = d.toLocaleString('id-ID');
         document.getElementById('bulanAuto').value = d.getMonth() + 1;
     }
 
     window.onload = setupAuto;
 
-// ============================================
-    // FORM SUBMIT & KIRIM DATA
-    // ============================================
     document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const btn = document.getElementById('btnSimpan');
@@ -637,8 +663,6 @@
         });
     });
 
-//CARI DATA TMK
-
     function cariDataTMK() {
         const input = document.getElementById("inputCariTMK");
         const keyword = input.value.toLowerCase();
@@ -671,7 +695,6 @@
 
     function pilihProdusen(nama) {
         document.getElementById('inputCariTMK').value = nama;
-        // Opsional: Langsung isi ke form input
         document.getElementById('namaProduk').value = "[TMK] " + nama + " - ";
         alert("Produsen dipilih. Silakan lengkapi data produk di form input.");
         showForm();
@@ -680,49 +703,35 @@
     function showTMKSearch() {
         document.getElementById("tmkContent").style.display = "block";
         document.getElementById("inputFormContent").style.display = "none";
-        document.getElementById("menuTMK").classList.add("active");
-        document.getElementById("menuInput").classList.remove("active");
+        document.getElementById("guideContent").style.display = "none";
         document.getElementById("pageTitle").innerText = "Riwayat TMK Produsen";
+        resetActiveMenu();
+        document.getElementById("menuTMK").classList.add("active");
     }
 
     function showForm() {
         document.getElementById("tmkContent").style.display = "none";
         document.getElementById("inputFormContent").style.display = "block";
-        document.getElementById("menuInput").classList.add("active");
-        document.getElementById("menuTMK").classList.remove("active");
+        document.getElementById("guideContent").style.display = "none";
         document.getElementById("pageTitle").innerText = "Form Renlak Kosmetik 2026";
+        resetActiveMenu();
+        document.getElementById("menuInput").classList.add("active");
     }
 
-    function toggleSidebar() {
-        const sidebar = document.querySelector('.sidebar');
-        const main = document.querySelector('.main-content');
-        if (window.innerWidth <= 768) {
-            sidebar.classList.toggle('show');
-            document.getElementById('overlay').classList.toggle('active');
-        } else {
-            sidebar.classList.toggle('collapsed');
-            main.classList.toggle('expanded');
-        }
+    function tampilkanPanduanSampel() {
+        document.getElementById("tmkContent").style.display = "none";
+        document.getElementById("inputFormContent").style.display = "none";
+        document.getElementById("guideContent").style.display = "block";
+        document.getElementById("pageTitle").innerText = "Panduan Jumlah Sampel";
+        resetActiveMenu();
+        document.getElementById("menuPanduan").classList.add("active");
     }
 
-    function updateSubKategori() {
-        const kat = document.getElementById("kategori").value;
-        const subKat = document.getElementById("subKategori");
-        subKat.innerHTML = '<option value="" disabled selected>Pilih Sub Kategori...</option>';
-        if (dataKategori[kat]) {
-            dataKategori[kat].forEach(item => {
-                let opt = document.createElement("option");
-                opt.value = item; opt.innerHTML = item;
-                subKat.appendChild(opt);
-            });
-        }
+    function resetActiveMenu() {
+        document.getElementById("menuInput").classList.remove("active");
+        document.getElementById("menuTMK").classList.remove("active");
+        document.getElementById("menuPanduan").classList.remove("active");
     }
-
-    window.onload = function() {
-        const d = new Date();
-        document.getElementById('tglSampling').value = d.toLocaleString('id-ID');
-        document.getElementById('bulanAuto').value = d.getMonth() + 1;
-    };
 </script>
 
 </body>
