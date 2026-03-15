@@ -21,17 +21,18 @@
             overflow-x: hidden;
         }
         
-        .sidebar { 
-            height: 100vh; 
-            background: white; 
-            border-right: 1px solid #dee2e6; 
-            position: fixed; 
-            width: var(--sidebar-width); 
-            z-index: 1000; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            left: 0;
-            top: 0;
-        }
+       .sidebar { 
+    height: 100vh; 
+    background: white; 
+    border-right: 1px solid #dee2e6; 
+    position: fixed; 
+    width: var(--sidebar-width); 
+    z-index: 1000; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+}
 
         .sidebar.collapsed {
             left: calc(var(--sidebar-width) * -1);
@@ -144,11 +145,22 @@
 
         .sidebar-overlay.active { display: block; }
 
-        @media (max-width: 768px) {
-            .main-content { margin-left: 0; padding: 20px; }
-            .sidebar { left: -280px; }
-            .sidebar.show { left: 0; }
-        }
+       @media (max-width: 768px) {
+
+    .main-content { 
+        margin-left: 0; 
+        padding: 20px; 
+    }
+
+    .sidebar { 
+        left: 0; 
+    }
+
+    .sidebar.hide { 
+        left: -280px; 
+    }
+
+}
     </style>
 </head>
 <body>
@@ -160,24 +172,32 @@
         <h4 class="fw-bold text-dark mb-0">App Kosmetik</h4>
         <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Sampling Renlak 2026</small>
     </div>
-    <nav class="nav flex-column">
-        <a class="nav-link active" onclick="showForm()" id="menuInput">
-            <i class="material-icons">add_task</i> Input Sampling
-        </a>
-        <a class="nav-link" onclick="showTMKSearch()" id="menuTMK">
-            <i class="material-icons">history</i> Cari Riwayat TMK
-        </a>
-        <a class="nav-link" onclick="tampilkanPanduanSampel()" id="menuPanduan">
-            <i class="material-icons">rule</i> Panduan Jumlah Sampel
-        </a>
-        <a class="nav-link" href="https://docs.google.com/spreadsheets/d/1XfaZIgQGlgr3r6-zBGdy0QeCiLD_iws8auUR00DWZfY/edit" target="_blank">
-            <i class="material-icons">table_view</i> Database Mentah
-        </a>
-        <hr class="mx-3">
-        <a class="nav-link text-danger" onclick="window.close()">
-            <i class="material-icons">power_settings_new</i> Keluar
-        </a>
-    </nav>
+<nav class="nav flex-column">
+
+<a class="nav-link active" onclick="showForm(); closeSidebarMobile();" id="menuInput">
+<i class="material-icons">add_task</i> Input Sampling
+</a>
+
+<a class="nav-link" onclick="showTMKSearch(); closeSidebarMobile();" id="menuTMK">
+<i class="material-icons">history</i> Cari Riwayat TMK
+</a>
+
+<a class="nav-link" onclick="tampilkanPanduanSampel(); closeSidebarMobile();" id="menuPanduan">
+<i class="material-icons">rule</i> Panduan Jumlah Sampel
+</a>
+
+<a class="nav-link" href="https://docs.google.com/spreadsheets/d/1XfaZIgQGlgr3r6-zBGdy0QeCiLD_iws8auUR00DWZfY/edit" target="_blank">
+<i class="material-icons">table_view</i> Database Mentah
+</a>
+
+<hr class="mx-3">
+
+<a class="nav-link text-danger" onclick="window.close(); closeSidebarMobile();">
+<i class="material-icons">power_settings_new</i> Keluar
+</a>
+
+</nav>
+    
 </div>
 
 <div class="main-content" id="main-content">
@@ -586,19 +606,30 @@
 
     };
 
-    function toggleSidebar() {
-        const sidebar = document.querySelector('.sidebar');
-        const mainContent = document.querySelector('.main-content');
-        const overlay = document.getElementById('overlay');
-        
-        if (window.innerWidth <= 768) {
-            sidebar.classList.toggle('show');
-            overlay.classList.toggle('active');
+   function toggleSidebar() {
+
+    const sidebar = document.querySelector('.sidebar');
+    const mainContent = document.querySelector('.main-content');
+    const overlay = document.getElementById('overlay');
+
+    if (window.innerWidth <= 768) {
+
+        sidebar.classList.toggle('hide');
+
+        if (sidebar.classList.contains('hide')) {
+            overlay.classList.remove('active');
         } else {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
+            overlay.classList.add('active');
         }
+
+    } else {
+
+        sidebar.classList.toggle('collapsed');
+        mainContent.classList.toggle('expanded');
+
     }
+
+}
 
     function updateSubKategori() {
         const kat = document.getElementById("kategori").value;
@@ -620,7 +651,21 @@
         document.getElementById('bulanAuto').value = d.getMonth() + 1;
     }
 
-    window.onload = setupAuto;
+    window.onload = function() {
+
+    setupAuto();
+
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('overlay');
+
+    if (window.innerWidth <= 768) {
+        sidebar.classList.remove('hide');
+        overlay.classList.add('active');
+    } else {
+        overlay.classList.remove('active');
+    }
+
+};
 
     document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -707,7 +752,6 @@
         document.getElementById("pageTitle").innerText = "Riwayat TMK Produsen";
         resetActiveMenu();
         document.getElementById("menuTMK").classList.add("active");
-        if (window.innerWidth <= 768) toggleSidebar();
     }
 
     function showForm() {
@@ -717,7 +761,6 @@
         document.getElementById("pageTitle").innerText = "Form Renlak Kosmetik 2026";
         resetActiveMenu();
         document.getElementById("menuInput").classList.add("active");
-        if (window.innerWidth <= 768) toggleSidebar();
     }
 
     function tampilkanPanduanSampel() {
@@ -727,7 +770,6 @@
         document.getElementById("pageTitle").innerText = "Panduan Jumlah Sampel";
         resetActiveMenu();
         document.getElementById("menuPanduan").classList.add("active");
-        if (window.innerWidth <= 768) toggleSidebar();
     }
 
     function resetActiveMenu() {
@@ -735,6 +777,19 @@
         document.getElementById("menuTMK").classList.remove("active");
         document.getElementById("menuPanduan").classList.remove("active");
     }
+function closeSidebarMobile() {
+
+    if (window.innerWidth <= 768) {
+
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.getElementById('overlay');
+
+        sidebar.classList.add('hide');
+        overlay.classList.remove('active');
+
+    }
+
+}
 </script>
 
 </body>
