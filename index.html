@@ -7,230 +7,111 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        :root { 
+        :root {
             --primary-blue: #455a64;
-            --bg-light: #f1f4f5; 
+            --bg-light: #f1f4f5;
             --blue-grey-soft: #eceff1;
-            --blue-grey-border: #cfd8dc; 
+            --blue-grey-border: #cfd8dc;
             --sidebar-width: 280px;
         }
+        body { background-color: var(--bg-light); font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
         
-        body { 
-            background-color: var(--bg-light); 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            overflow-x: hidden;
+        /* Sidebar Styles */
+        .sidebar { 
+            height: 100vh; background: white; border-right: 1px solid #dee2e6; 
+            position: fixed; width: var(--sidebar-width); z-index: 1000; 
+            transition: 0.3s; left: 0; top: 0; 
         }
+        .sidebar.collapsed { left: calc(var(--sidebar-width) * -1); }
         
-       .sidebar { 
-    height: 100vh; 
-    background: white; 
-    border-right: 1px solid #dee2e6; 
-    position: fixed; 
-    width: var(--sidebar-width); 
-    z-index: 1000; 
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    left: 0;
-    top: 0;
-    overflow-y: auto;
-}
-
-        .sidebar.collapsed {
-            left: calc(var(--sidebar-width) * -1);
-        }
-
         .nav-link { 
-            color: #555; 
-            padding: 12px 20px; 
-            display: flex; 
-            align-items: center; 
-            border-radius: 8px; 
-            margin: 5px 15px; 
-            text-decoration: none; 
-            cursor: pointer;
-            transition: 0.3s;
+            color: #555; padding: 12px 20px; display: flex; align-items: center; 
+            border-radius: 8px; margin: 5px 15px; text-decoration: none; cursor: pointer; 
         }
-        
-        .nav-link:hover { 
-            background-color: #f8f9fa; 
-            color: #607d8b; 
-        }
-        
-        .nav-link.active { 
-            background-color: #607d8b; 
-            color: white !important; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-        }
-        
-        .nav-link i { 
-            margin-right: 12px; 
-            font-size: 20px;
-        }
-        
-        .main-content { 
-            margin-left: var(--sidebar-width); 
-            padding: 40px; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .nav-link:hover { background-color: #f8f9fa; color: #607d8b; }
+        .nav-link.active { background-color: #607d8b !important; color: white !important; }
+        .nav-link i { margin-right: 12px; font-size: 20px; }
 
-        .main-content.expanded {
-            margin-left: 0;
-        }
-        
+        /* Content Styles */
+        .main-content { margin-left: var(--sidebar-width); padding: 40px; transition: 0.3s; }
+        .main-content.expanded { margin-left: 0; }
         .form-card, .card { 
-            background: var(--blue-grey-soft); 
-            padding: 35px; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid var(--blue-grey-border); 
+            background: var(--blue-grey-soft); padding: 30px; border-radius: 15px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--blue-grey-border); 
         }
+        .header-title { border-left: 5px solid #607d8b; padding-left: 15px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
         
-        .header-title { 
-            border-left: 5px solid #607d8b; 
-            padding-left: 15px; 
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        label { font-size: 0.85rem; font-weight: 600; color: #37474f; margin-bottom: 5px; }
+        .readonly-field { background-color: #fdfdfd !important; color: #78909c; font-weight: bold; border: 1px dashed #b0bec5; }
+        .btn-submit { background-color: #607d8b; border: none; padding: 12px 30px; border-radius: 10px; font-weight: bold; color: white; transition: 0.3s; }
+        .btn-submit:hover { background-color: #455a64; transform: translateY(-2px); }
+
+        @media (max-width: 768px) {
+            .main-content { margin-left: 0; padding: 20px; }
+            .sidebar { left: -280px; }
+            .sidebar.show { left: 0; }
         }
-        
-        label { 
-            font-size: 0.85rem; 
-            font-weight: 600; 
-            color: #37474f; 
-            margin-bottom: 6px; 
-        }
-        
-        .form-control, .form-select { 
-            border-radius: 10px; 
-            padding: 11px; 
-            border: 1px solid #b0bec5; 
-            background-color: white; 
-        }
-        
-        .readonly-field { 
-            background-color: #fdfdfd !important; 
-            color: #78909c; 
-            font-weight: bold; 
-            border: 1px dashed #b0bec5; 
-        }
-        
-        .btn-submit { 
-            background-color: #607d8b; 
-            border: none; 
-            padding: 12px 30px; 
-            border-radius: 10px; 
-            font-weight: bold; 
-            color: white; 
-            transition: 0.3s; 
-        }
-
-        #btnToggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-            color: var(--primary-blue);
-        }
-
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-        }
-
-        .sidebar-overlay.active { display: block; }
-
-       @media (max-width: 768px) {
-
-    .main-content { 
-        margin-left: 0; 
-        padding: 20px; 
-    }
-
-    .sidebar { 
-        left: 0; 
-    }
-
-    .sidebar.hide { 
-        left: -280px; 
-    }
-
-}
     </style>
 </head>
 <body>
 
-<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
-
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
     <div class="p-4 mb-3">
         <h4 class="fw-bold text-dark mb-0">App Kosmetik</h4>
         <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Sampling Renlak 2026</small>
     </div>
-<nav class="nav flex-column">
-
-<a class="nav-link active" onclick="showForm(); closeSidebarMobile();" id="menuInput">
-<i class="material-icons">add_task</i> Input Sampling
-</a>
-
-<a class="nav-link" onclick="showTMKSearch(); closeSidebarMobile();" id="menuTMK">
-<i class="material-icons">history</i> Cari Riwayat TMK
-</a>
-
-<a class="nav-link" onclick="tampilkanPanduanSampel(); closeSidebarMobile();" id="menuPanduan">
-<i class="material-icons">rule</i> Panduan Jumlah Sampel
-</a>
-
-<a class="nav-link" href="https://docs.google.com/spreadsheets/d/1XfaZIgQGlgr3r6-zBGdy0QeCiLD_iws8auUR00DWZfY/edit" target="_blank">
-<i class="material-icons">table_view</i> Database Mentah
-</a>
-
-<hr class="mx-3">
-
-<a class="nav-link text-danger" onclick="window.close(); closeSidebarMobile();">
-<i class="material-icons">power_settings_new</i> Keluar
-</a>
-
-</nav>
-    
+    <nav class="nav flex-column">
+        <a class="nav-link active" onclick="showSection('inputFormContent', this)" id="menuInput">
+            <i class="material-icons">add_task</i> Input Sampling
+        </a>
+        <a class="nav-link" onclick="showSection('tmkContent', this)" id="menuTMK">
+            <i class="material-icons">history</i> Cari Riwayat TMK
+        </a>
+        <a class="nav-link" onclick="showSection('negaraContent', this)" id="menuNegara">
+            <i class="material-icons">public</i> Penotifikasi Negara
+        </a>
+        <a class="nav-link" onclick="showSection('guideContent', this)" id="menuPanduan">
+            <i class="material-icons">rule</i> Panduan Sampel
+        </a>
+        <a class="nav-link" href="https://docs.google.com/spreadsheets/d/1XfaZIgQGlgr3r6-zBGdy0QeCiLD_iws8auUR00DWZfY/edit" target="_blank">
+            <i class="material-icons">table_view</i> Database Mentah
+        </a>
+    </nav>
 </div>
 
 <div class="main-content" id="main-content">
     <div class="header-title">
         <h2 class="fw-bold text-dark m-0" id="pageTitle">Form Renlak Kosmetik 2026</h2>
-        <button id="btnToggle" onclick="toggleSidebar()"><i class="material-icons">menu</i></button>
+        <button class="btn btn-outline-secondary" onclick="toggleSidebar()"><i class="material-icons">menu</i></button>
     </div>
 
-    <div id="tmkContent" style="display:none;" class="card p-4 shadow-sm mb-4">
+    <div id="tmkContent" style="display:none;" class="card mb-4">
         <h4 class="mb-4 text-primary"><span class="material-icons">search</span> Cari Riwayat TMK Produsen</h4>
         <div class="input-group mb-3">
-            <input type="text" id="inputCariTMK" class="form-control" placeholder="Ketik minimal 2 huruf nama PT atau CV..." oninput="cariDataTMK()">
-            <button class="btn btn-primary" onclick="cariDataTMK()">Cari</button>
+            <input type="text" id="inputCariTMK" class="form-control" placeholder="Ketik nama PT atau CV..." oninput="cariDataTMK()">
         </div>
-        <hr>
-        <div id="hasilCariTMK">
-            <p class="text-muted italic text-center">Masukkan minimal 2 huruf untuk melihat riwayat pelanggaran.</p>
-        </div>
+        <div id="hasilCariTMK"></div>
     </div>
 
-    <div id="guideContent" style="display:none;" class="card p-4 shadow-sm mb-4">
-        <h4 class="mb-4 text-primary"><span class="material-icons">straighten</span> Panduan Jumlah Pengambilan Sampel</h4>
+    <div id="negaraContent" style="display:none;" class="card">
+        <h5 class="mb-3 text-success">Daftar Penotifikasi Negara</h5>
+        <div class="row mb-3">
+            <div class="col-md-4"><button class="btn btn-outline-success w-100 mb-2" onclick="filterByCountry('Thailand')">Thailand</button></div>
+            <div class="col-md-4"><button class="btn btn-outline-success w-100 mb-2" onclick="filterByCountry('Tiongkok')">Tiongkok</button></div>
+            <div class="col-md-4"><button class="btn btn-outline-success w-100 mb-2" onclick="filterByCountry('Filipina')">Filipina</button></div>
+        </div>
+        <div id="listNegaraHasil"></div>
+    </div>
+
+    <div id="guideContent" style="display:none;" class="card">
+        <h4 class="mb-4 text-primary">Panduan Jumlah Pengambilan Sampel</h4>
         <div class="table-responsive">
-            <table class="table table-bordered table-hover bg-white">
+            <table class="table table-bordered bg-white">
                 <thead class="table-secondary">
-                    <tr>
-                        <th>Kategori</th>
-                        <th>Parameter Kimia</th>
-                        <th>Parameter Mikro</th>
-                    </tr>
+                    <tr><th>Kategori</th><th>Parameter Kimia</th><th>Parameter Mikro</th></tr>
                 </thead>
                 <tbody>
-                <tr><td>Lipstik/Lipglos/Lipcare</td><td>16 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
+                    <tr><td>Lipstik/Lipglos/Lipcare</td><td>16 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
                 <tr><td>Blush On</td><td>16 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
                 <tr><td>Eye Shadow</td><td>16 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
                 <tr><td>Bedak Padat/Powder</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
@@ -251,6 +132,7 @@
                 <tr><td>Masker Wajah</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
                 <tr><td>Deodorant</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
                 <tr><td>Anti Jerawat</td><td>6 Kmsn @ 10gr</td><td>1 kmsn min 10gr</td></tr>
+
                 </tbody>
             </table>
         </div>
@@ -258,29 +140,35 @@
 
     <div id="inputFormContent" class="form-card">
         <form id="kosmetikForm" class="row g-4">
+            <div class="col-12"><h5 class="text-primary border-bottom pb-2">1. Data Administrasi</h5></div>
             <div class="col-md-2">
-                <label>1. No (Auto)</label>
+                <label>No. Sampel</label>
                 <input type="text" id="noSample" class="form-control readonly-field" value="Otomatis" readonly>
             </div>
             <div class="col-md-3">
-                <label>2. Tanggal</label>
+                <label>Tanggal Sampling</label>
                 <input type="text" id="tglSampling" class="form-control readonly-field" readonly>
             </div>
-            <div class="col-md-3">
-                <label>12. Bulan (Angka)</label>
+            <div class="col-md-2">
+                <label>Bulan (Angka)</label>
                 <input type="text" id="bulanAuto" class="form-control readonly-field" readonly>
             </div>
-            <div class="col-md-4">
-                <label>13. Petugas</label>
+            <div class="col-md-5">
+                <label>Nama Petugas</label>
                 <input type="text" id="petugas" class="form-control" placeholder="Nama Petugas" required>
             </div>
 
+            <div class="col-12"><h5 class="text-primary border-bottom pb-2 mt-3">2. Identitas Produk</h5></div>
             <div class="col-md-6">
-                <label>3. Nama Produk</label>
+                <label>Nama Produk (Sesuai Label)</label>
                 <input type="text" id="namaProduk" class="form-control" placeholder="Nama produk kosmetik" required>
             </div>
             <div class="col-md-6">
-                <label>4. Kategori</label>
+                <label>Nomor Izin Edar (NIE)</label>
+                <input type="text" id="nie" class="form-control" placeholder="NA18xxxxxxxxxx" required>
+            </div>
+            <div class="col-md-4">
+                <label>Kategori Sampling</label>
                 <select id="kategori" class="form-select" onchange="updateSubKategori()" required>
                     <option value="" disabled selected>Pilih Kategori...</option>
                     <option>Kosmetik Beresiko Tinggi</option>
@@ -294,10 +182,10 @@
                     <option>Kosmetik yang diduga mengandung DNA porcine</option>
                     <option>Kosmetik viral</option>
                     <option>Kosmetik di online official store/reseller</option>
+
                 </select>
             </div>
-
-            <div class="col-md-4">
+           <div class="col-md-4">
                 <label>5. Sub Kategori</label>
                 <select id="subKategori" class="form-select" required>
                     <option value="" disabled selected>Pilih Kategori dahulu...</option>
@@ -335,15 +223,16 @@
 
             <div class="col-12 text-end pt-4 border-top mt-4">
                 <button type="reset" class="btn btn-light px-4 me-2">Reset</button>
-                <button type="submit" id="btnSimpan" class="btn btn-submit shadow-sm">KIRIM DATA KOSMETIK</button>
+                  <button type="submit" id="btnSimpan" class="btn btn-submit shadow-sm">KIRIM DATA KOSMETIK</button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
+    // Database riwayat TMS sederhana
     const dataTMK = [
-        { nama: "Agus Mira Mandiri Utama, PT", riwayat: "Asam tioglikolat (2023), Merkuri (2024)" },
+       { nama: "Agus Mira Mandiri Utama, PT", riwayat: "Asam tioglikolat (2023), Merkuri (2024)" },
   { nama: "Akasha Wira International, PT", riwayat: "Mikroba (2022), Mikroba (2025)" },
   { nama: "Alamanda Global Health, PT", riwayat: "Mikroba (2022), Mikroba (2025)" },
   { nama: "Aleyah Sintasint Farma, PT", riwayat: "Mikroba (2024), Hidrokuinon (2025)" },
@@ -591,6 +480,295 @@
 
     ];
 
+    const databasePenotif = [
+        { nama: "Aladdin Sarana Indonesia, PT", negara: "Thailand" },
+    { nama: "Alliance Cosmetics, PT", negara: "Thailand" },
+    { nama: "Amindoway Jaya, PT", negara: "Thailand" },
+    { nama: "Anugerah Pharmindo Lestari, PT", negara: "Thailand" },
+    { nama: "Aromatik International Indonesia, PT", negara: "Thailand" },
+    { nama: "Balindojaya Sejahtera, PT", negara: "Thailand" },
+    { nama: "Beiersdorf Indonesia, PT", negara: "Thailand" },
+    { nama: "Better Way Indonesia, PT", negara: "Thailand" },
+    { nama: "Bima Artha, PT", negara: "Thailand" },
+    { nama: "Bintang Fajar Abadi, CV", negara: "Thailand" },
+    { nama: "Bio Lotus Indonesia, PT", negara: "Thailand" },
+    { nama: "Cekindo Business International, PT", negara: "Thailand" },
+    { nama: "Citra Gemilang Prima, PT", negara: "Thailand" },
+    { nama: "Citra Usaha Lamindo, PT", negara: "Thailand" },
+    { nama: "Colgate Palmolive Indonesia, PT", negara: "Thailand" },
+    { nama: "Darya-Varia Laboratoria Tbk, PT", negara: "Thailand" },
+    { nama: "DFI Retail Nusantara Tbk, PT", negara: "Thailand" },
+    { nama: "Dhifa Pasti Sukses, PT", negara: "Thailand" },
+    { nama: "Distribusi Kesehatan dan Kecantikan Nusantara, PT", negara: "Thailand" },
+    { nama: "Duta Indonesia Permai, PT", negara: "Thailand" },
+    { nama: "Duta Intidaya Tbk, PT", negara: "Thailand" },
+    { nama: "Era Ventura Indonesia, PT", negara: "Thailand" },
+    { nama: "Eres Revco, PT", negara: "Thailand" },
+    { nama: "Formasi Kreasi Indonesia, PT", negara: "Thailand" },
+    { nama: "Giffindo Sukses Perkasa, PT", negara: "Thailand" },
+    { nama: "Glori Global Sukses, PT", negara: "Thailand" },
+    { nama: "Granton Marketing, PT", negara: "Thailand" },
+    { nama: "Haleon Indonesia Trading, PT", negara: "Thailand" },
+    { nama: "Infiniti Marvela Estella, PT", negara: "Thailand" },
+    { nama: "Infiniti Marvela Levana, PT", negara: "Thailand" },
+    { nama: "Inova Pharmaceuticals Indonesia, PT", negara: "Thailand" },
+    { nama: "Johnson & Johnson Indonesia, PT", negara: "Thailand" },
+    { nama: "KK Indonesia, PT", negara: "Thailand" },
+    { nama: "KKI Nusantara Sukses, PT", negara: "Thailand" },
+    { nama: "Koleksi Jaya, PT", negara: "Thailand" },
+    { nama: "Kurnia Cosmolab Indonesia, PT", negara: "Thailand" },
+    { nama: "Laneige Indonesia Pacific, PT", negara: "Thailand" },
+    { nama: "L'Oreal Indonesia, PT", negara: "Thailand" },
+    { nama: "Manna Indo Selaras, PT", negara: "Thailand" },
+    { nama: "Mega Lifesciences, PT", negara: "Thailand" },
+    { nama: "Miano Esensial Jaya, PT", negara: "Thailand" },
+    { nama: "Mimi Global Asia, PT", negara: "Thailand" },
+    { nama: "Mitra Bersama Jaya, PT", negara: "Thailand" },
+    { nama: "Mitra Selaras Sempurna, PT", negara: "Thailand" },
+    { nama: "Monica Lestari, PT", negara: "Thailand" },
+    { nama: "Muaq Berkah Sejahtera, PT", negara: "Thailand" },
+    { nama: "Multi Indocitra Tbk, PT", negara: "Thailand" },
+    { nama: "Naraay Anugerah Indonesia, PT", negara: "Thailand" },
+    { nama: "Narchi Gold Indonesia, PT", negara: "Thailand" },
+    { nama: "Natural Alam Abadi, PT", negara: "Thailand" },
+    { nama: "Niaga Warna Persada, PT", negara: "Thailand" },
+    { nama: "Nosredna, CV", negara: "Thailand" },
+    { nama: "Nu Skin Distribution Indonesia, PT", negara: "Thailand" },
+    { nama: "Panen Selaras Adiperkasa, PT", negara: "Thailand" },
+    { nama: "Paragon Technology And Innovation, PT", negara: "Thailand" },
+    { nama: "Parama Global Inspira, PT", negara: "Thailand" },
+    { nama: "Procter & Gamble Home Products Indonesia, PT", negara: "Thailand" },
+    { nama: "Procter & Gamble Operations Indonesia, PT", negara: "Thailand" },
+    { nama: "PZ Cussons Indonesia, PT", negara: "Thailand" },
+    { nama: "Rahmat Eka Yaksa, PT", negara: "Thailand" },
+    { nama: "Raja Asia Perkasa, PT", negara: "Thailand" },
+    { nama: "Ran Kosmetik Indonesia, PT", negara: "Thailand" },
+    { nama: "Siam Nusantara Sinergi, PT", negara: "Thailand" },
+    { nama: "Social Bella Indonesia, PT", negara: "Thailand" },
+    { nama: "Tanamas Kosmetik Indonesia, PT", negara: "Thailand" },
+    { nama: "Tirta Buana Indoraya, PT", negara: "Thailand" },
+    { nama: "Trilestari Indometika Sejati, PT", negara: "Thailand" },
+    { nama: "UICCP Indonesia, PT", negara: "Thailand" },
+    { nama: "Unilever Enterprises Indonesia, PT", negara: "Thailand" },
+    { nama: "Unilever Indonesia Tbk, PT", negara: "Thailand" },
+    { nama: "Unirama Sukses Internasional, PT", negara: "Thailand" },
+    { nama: "Universal Jaya Sentosa, PT", negara: "Thailand" },
+    { nama: "Varia Niaga Sukses, PT", negara: "Thailand" },
+    { nama: "Victoria Care Indonesia Tbk, PT", negara: "Thailand" },
+    { nama: "Wicaksana Overseas International Tbk, PT", negara: "Thailand" },
+
+    // --- DATA FILIPINA ---
+    { nama: "Darya-Varia Laboratoria Tbk, PT", negara: "Filipina" },
+    { nama: "Lloyd Laboratories Indonesia, PT", negara: "Filipina" },
+    { nama: "RDL Distribusi Indonesia, PT", negara: "Filipina" },
+    { nama: "UICCP Indonesia, PT", negara: "Filipina" },
+    { nama: "Unilever Enterprises Indonesia, PT", negara: "Filipina" },
+    { nama: "Unza Vitalis, PT", negara: "Filipina" },
+
+    // --- DATA TIONGKOK (Ekstraksi Halaman 4-14) ---
+    { nama: "Abeaudy Sukses International, PT", negara: "Tiongkok" },
+    { nama: "Aepura Kosmetik Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Aestetika Sejahtera Nusantara, PT", negara: "Tiongkok" },
+    { nama: "Agung Mulia Chemindo, PT", negara: "Tiongkok" },
+    { nama: "Akasha Wira International Tbk, PT", negara: "Tiongkok" },
+    { nama: "Alfa Viva Famili, PT", negara: "Tiongkok" },
+    { nama: "Alia Kreasi Cantika, PT", negara: "Tiongkok" },
+    { nama: "Alpha Bella Pasifik, PT", negara: "Tiongkok" },
+    { nama: "Amara Maju Jaya, PT", negara: "Tiongkok" },
+    { nama: "Anugerah Familindo Lestari, PT", negara: "Tiongkok" },
+    { nama: "Aroma Abadi, PT", negara: "Tiongkok" },
+    { nama: "Arta Anugerah Trading, PT", negara: "Tiongkok" },
+    { nama: "Asia Anugerah Biologis, PT", negara: "Tiongkok" },
+    { nama: "Bahagia Mandiri Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Bali Babe Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Barclay Products, PT", negara: "Tiongkok" },
+    { nama: "Beach Street Asia, PT", negara: "Tiongkok" },
+    { nama: "Beaute Luxe Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Beautimax Kosmetika Berjaya, PT", negara: "Tiongkok" },
+    { nama: "Beauty Essential Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Bensen Guna Mandiri, PT", negara: "Tiongkok" },
+    { nama: "Berkah Tiga Matahari, PT", negara: "Tiongkok" },
+    { nama: "Bersama Perawatan Cantik, PT", negara: "Tiongkok" },
+    { nama: "Bintang Busana Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Bio Secret Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Blue Origin International, PT", negara: "Tiongkok" },
+    { nama: "Boehls Cosmetics Trading, PT", negara: "Tiongkok" },
+    { nama: "Botryo Herba Bioteknologi, PT", negara: "Tiongkok" },
+    { nama: "Budi Jaya Amenities, PT", negara: "Tiongkok" },
+    { nama: "Bunto Mulia Abadi, PT", negara: "Tiongkok" },
+    { nama: "Cahaya Asia Gemilang, PT", negara: "Tiongkok" },
+    { nama: "Cahaya Cantika Nusantara, PT", negara: "Tiongkok" },
+    { nama: "Cakra Daya Makmur, PT", negara: "Tiongkok" },
+    { nama: "Cantika Tanjaya Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Citra Alam Aromindo, PT", negara: "Tiongkok" },
+    { nama: "Citra Kosmetika Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Citra Pasifik Kosmetik, PT", negara: "Tiongkok" },
+    { nama: "Claira Usaha Sukses, PT", negara: "Tiongkok" },
+    { nama: "Cobra Dental Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Cosme Jaya Utama, PT", negara: "Tiongkok" },
+    { nama: "Dargiss Inti Sejahtera, PT", negara: "Tiongkok" },
+    { nama: "Delight Connection Cosmetics Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Dewi Maju Bahagia, PT", negara: "Tiongkok" },
+    { nama: "Diamante Abadi Jaya, PT", negara: "Tiongkok" },
+    { nama: "Doctor Kim Biotech Beauty, PT", negara: "Tiongkok" },
+    { nama: "Dojako Kosmetik Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Dream Skin Care, PT", negara: "Tiongkok" },
+    { nama: "Dua Srikandi Lestari, PT", negara: "Tiongkok" },
+    { nama: "Duta Cantik Dewata, PT", negara: "Tiongkok" },
+    { nama: "Eka Jaya Internasional, PT", negara: "Tiongkok" },
+    { nama: "Ekawangsa Alexindo, PT", negara: "Tiongkok" },
+    { nama: "Elc Beauty Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Empower Beauty Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Era Ventura Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Fabindo Sejahtera, PT", negara: "Tiongkok" },
+    { nama: "FCL Internasional Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Fensoye Beauty Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Focusee Technology Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Formasi Kreasi Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Fortuna Arunika Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Gabrielle Odette Dwitunggal, PT", negara: "Tiongkok" },
+    { nama: "Genero Pharmaceuticals, PT", negara: "Tiongkok" },
+    { nama: "Global Green International, PT", negara: "Tiongkok" },
+    { nama: "Global Kreasi Indah, PT", negara: "Tiongkok" },
+    { nama: "Global Next Biotech, PT", negara: "Tiongkok" },
+    { nama: "Global Trade Internusa, PT", negara: "Tiongkok" },
+    { nama: "Gloria Origita Cosmetics, PT", negara: "Tiongkok" },
+    { nama: "Golden Belle Global, PT", negara: "Tiongkok" },
+    { nama: "Good Sale Tech, PT", negara: "Tiongkok" },
+    { nama: "Greenleaf Global Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Guoyu Feng Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Happi Kosmetik Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Has Maju Sejahtera, PT", negara: "Tiongkok" },
+    { nama: "Himalaya Wellness Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Huagao Trading International, PT", negara: "Tiongkok" },
+    { nama: "Hypefast Distribusi Nusantara, PT", negara: "Tiongkok" },
+    { nama: "Indo Chic Trading, PT", negara: "Tiongkok" },
+    { nama: "Indo Online Jaya, PT", negara: "Tiongkok" },
+    { nama: "Indo Tama Glory, PT", negara: "Tiongkok" },
+    { nama: "Indotama Sentosa Lestari, PT", negara: "Tiongkok" },
+    { nama: "Inspirasi Untuk Wanita, PT", negara: "Tiongkok" },
+    { nama: "Ivy Beauty Collection, PT", negara: "Tiongkok" },
+    { nama: "Jala Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Javinci Berkat Kreatif Sentosa, PT", negara: "Tiongkok" },
+    { nama: "Jaya Indah Abadi Niaga Gemilang, PT", negara: "Tiongkok" },
+    { nama: "Jaysuling Cosmetics Beauty, PT", negara: "Tiongkok" },
+    { nama: "Jelita Anugerah Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Jenny Cosmetics, PT", negara: "Tiongkok" },
+    { nama: "Jimon Group Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Joint Synergy Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Kaleido Kosmetik Internasional, PT", negara: "Tiongkok" },
+    { nama: "Kammacitta Ekspor Impor, PT", negara: "Tiongkok" },
+    { nama: "Kapuas Lintas Utama, PT", negara: "Tiongkok" },
+    { nama: "Kecantikan Permata Indo, PT", negara: "Tiongkok" },
+    { nama: "KKV International Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Komar Cosmetics Technology, PT", negara: "Tiongkok" },
+    { nama: "Kreasi Pesona Alami, PT", negara: "Tiongkok" },
+    { nama: "Laif Untuk Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Lanbena Trada International, PT", negara: "Tiongkok" },
+    { nama: "Lestari Estetik Indah, PT", negara: "Tiongkok" },
+    { nama: "Lets Glow Group International, PT", negara: "Tiongkok" },
+    { nama: "Lime International Trading, PT", negara: "Tiongkok" },
+    { nama: "Lintas Mitra Perkasa, PT", negara: "Tiongkok" },
+    { nama: "Livas Wijaya Global, PT", negara: "Tiongkok" },
+    { nama: "Loe Cantik Kita Cuan, PT", negara: "Tiongkok" },
+    { nama: "Lsy Makmur Sentosa, PT", negara: "Tiongkok" },
+    { nama: "Luna Woo Indonesia, PT", negara: "Tiongkok" },
+    { nama: "MS Union International, PT", negara: "Tiongkok" },
+    { nama: "Mahar Dharma Putri, PT", negara: "Tiongkok" },
+    { nama: "Maju Kirana Gemilang, PT", negara: "Tiongkok" },
+    { nama: "Mandom Indonesia Tbk, PT", negara: "Tiongkok" },
+    { nama: "MAP Aktif Adiperkasa Tbk, PT", negara: "Tiongkok" },
+    { nama: "Market America Indonesia Imports, PT", negara: "Tiongkok" },
+    { nama: "Marui Solusindo Atmadja, PT", negara: "Tiongkok" },
+    { nama: "Meishang Kosmetik Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Melional Bintang Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Metoo Beauty International, PT", negara: "Tiongkok" },
+    { nama: "Miduo Commercial Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Minika Perfekta Mandiri, PT", negara: "Tiongkok" },
+    { nama: "Miraigo Teknologi Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Monica Lestari, PT", negara: "Tiongkok" },
+    { nama: "Muaq Berkah Sejahtera, PT", negara: "Tiongkok" },
+    { nama: "Multi Indocitra Tbk, PT", negara: "Tiongkok" },
+    { nama: "Multi Safe Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Mustika Indah Sejahtera, PT", negara: "Tiongkok" },
+    { nama: "Mustika Satya Nusantara, PT", negara: "Tiongkok" },
+    { nama: "Mutiara Erly Sejahtera, PT", negara: "Tiongkok" },
+    { nama: "Naga Perkasa Group, PT", negara: "Tiongkok" },
+    { nama: "Napolopersada Abadi, PT", negara: "Tiongkok" },
+    { nama: "Narchi Gold Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Natura Pesona Mandiri, PT", negara: "Tiongkok" },
+    { nama: "Nayue Kosmetik Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Oriflame Cosmetics Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Ozzaskin Cantik Muda Alami, PT", negara: "Tiongkok" },
+    { nama: "Panca Talentalinas, PT", negara: "Tiongkok" },
+    { nama: "Pangestu Jaya Abadi, PT", negara: "Tiongkok" },
+    { nama: "Parama Global Inspira, PT", negara: "Tiongkok" },
+    { nama: "Passportindo Asia Global, PT", negara: "Tiongkok" },
+    { nama: "PBL Perdagangan International, PT", negara: "Tiongkok" },
+    { nama: "Pepper Prime Trading, PT", negara: "Tiongkok" },
+    { nama: "Pesona Gemilang Sejahtera, PT", negara: "Tiongkok" },
+    { nama: "Pharmex Global Astrindo, PT", negara: "Tiongkok" },
+    { nama: "Pink Pick Indonesia, PT", negara: "Tiongkok" },
+    { nama: "PMY Trada Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Prime Sinergi Internasional, PT", negara: "Tiongkok" },
+    { nama: "Procter & Gamble Home Products Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Putri Gemilang Berkarya, PT", negara: "Tiongkok" },
+    { nama: "Qincai Cosmetic Internasional, PT", negara: "Tiongkok" },
+    { nama: "Relindo Multi Cipta, PT", negara: "Tiongkok" },
+    { nama: "Remedy Natural Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Samudera Makmur Jaya, PT", negara: "Tiongkok" },
+    { nama: "Sania Subur Abadi, PT", negara: "Tiongkok" },
+    { nama: "Satya Pranata Jaya, PT", negara: "Tiongkok" },
+    { nama: "Sekar Estetik Aura, PT", negara: "Tiongkok" },
+    { nama: "Selfine Retail Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Senyum Karya Muda, PT", negara: "Tiongkok" },
+    { nama: "Serendippo Makmur Abadi, PT", negara: "Tiongkok" },
+    { nama: "Shengyang Technology Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Sheva Jordan Bersama, PT", negara: "Tiongkok" },
+    { nama: "Siap Kirim Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Sinar Mulia Kosmetik, PT", negara: "Tiongkok" },
+    { nama: "Suadi Terang Megantara, PT", negara: "Tiongkok" },
+    { nama: "Sinergia Beaute Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Skin Future Lab Indonesia, PT" , negara: "Tiongkok" },
+    { nama: "Sninely Nine Corp, PT", negara: "Tiongkok" },
+    { nama: "Sonaf Cosmetic Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Star Mandiri Global, PT", negara: "Tiongkok" },
+    { nama: "Suaka Kecantikan Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Sumber Ayu Cemerlang, PT", negara: "Tiongkok" },
+    { nama: "Surya Kemenangan Sejahtera, PT", negara: "Tiongkok" },
+    { nama: "Talcindo Profesional Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Tori Kosmetika Dunia, PT", negara: "Tiongkok" },
+    { nama: "Thevan Wellknown Trade, PT", negara: "Tiongkok" },
+    { nama: "Tian Xing Cloud Supply Chain Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Tiga Lab Anugerah, PT", negara: "Tiongkok" },
+    { nama: "Tirta Kumala Sari, PT", negara: "Tiongkok" },
+    { nama: "Tissor Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Tona Sukses Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Tasyen Omni Potensi, PT", negara: "Tiongkok" },
+    { nama: "Tri Sentosa Abadi, PT", negara: "Tiongkok" },
+    { nama: "Triniti Tunggal Abadi, PT", negara: "Tiongkok" },
+    { nama: "Trio Kosmetika Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Trueve Mitra Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Ubeauty Cosmetics Indonesia, PT", negara: "Tiongkok" },
+    { nama: "UMC Media Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Unilever Enterprises Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Unza Vitalis, PT", negara: "Tiongkok" },
+    { nama: "Urban Beauty Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Velindo Estetika Kosmetik, PT", negara: "Tiongkok" },
+    { nama: "Vibrant Glamour Beauty, PT", negara: "Tiongkok" },
+    { nama: "Vitapharm, PT", negara: "Tiongkok" },
+    { nama: "VNV Mitra Lestari, PT", negara: "Tiongkok" },
+    { nama: "Wanfu Glow Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Winida Lestari International, PT", negara: "Tiongkok" },
+    { nama: "WNW Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Wook Global Technology, PT", negara: "Tiongkok" },
+    { nama: "Xiao Yao Tekonologi, PT", negara: "Tiongkok" },
+    { nama: "Xingchen Cosmetics International Trade, PT", negara: "Tiongkok" },
+    { nama: "Yin Jie International Trading, PT", negara: "Tiongkok" },
+    { nama: "Yozzi Jaya Indonesia, PT", negara: "Tiongkok" },
+    { nama: "Yunyi Ecommerce Indonesia, PT", negara: "Tiongkok" }
+    ];
+
     const dataKategori = {
         "Kosmetik Beresiko Tinggi": ["Sediaan bayi", "Sediaan perawatan wajah", "krim siang", "krim malam", "Pelembab/ Moisturiser", "Sediaan rias mata", "Eye shadow", "Pensil alis", "Mascara", "Sediaan rias wajah (perona pipi)", "Sediaan rias bibir (lip color)", "Sediaan parfum (eau de cologne)", "Sediaan pewarna kuku"],
         "Kosmetik dengan riwayat Tidak Memenuhi Syarat": ["Sediaan untuk alis (pensil alis)", "Eye shadow", "Eye liner", "Blush on", "Bedak padat/ compact powder", "Pembersih kulit muka", "Mascara", "Eye Make Up Remover", "Penyegar kulit muka/toner", "Lip colour, Lip liner, Lip glos, Lip care", "Pewarna kuku", "Sediaan parfum (eau de cologne)", "Krim pencerah/Skin lightener", "Eau de Toilette/ Eau de Parfume/ Eau de Cologne/ Parfume", "krim siang", "krim malam", "Sediaan tabir surya"],
@@ -606,30 +784,27 @@
 
     };
 
-   function toggleSidebar() {
-
-    const sidebar = document.querySelector('.sidebar');
-    const mainContent = document.querySelector('.main-content');
-    const overlay = document.getElementById('overlay');
-
-    if (window.innerWidth <= 768) {
-
-        sidebar.classList.toggle('hide');
-
-        if (sidebar.classList.contains('hide')) {
-            overlay.classList.remove('active');
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const main = document.getElementById('main-content');
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('show');
         } else {
-            overlay.classList.add('active');
+            sidebar.classList.toggle('collapsed');
+            main.classList.toggle('expanded');
         }
-
-    } else {
-
-        sidebar.classList.toggle('collapsed');
-        mainContent.classList.toggle('expanded');
-
     }
 
-}
+    function showSection(sectionId, element) {
+        ['inputFormContent', 'tmkContent', 'negaraContent', 'guideContent'].forEach(id => {
+            document.getElementById(id).style.display = 'none';
+        });
+        document.getElementById(sectionId).style.display = 'block';
+        document.getElementById('pageTitle').innerText = element.innerText.trim();
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+        element.classList.add('active');
+        if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('show');
+    }
 
     function updateSubKategori() {
         const kat = document.getElementById("kategori").value;
@@ -645,29 +820,53 @@
         }
     }
 
+    function cariDataTMK() {
+        const keyword = document.getElementById("inputCariTMK").value.toLowerCase();
+        const container = document.getElementById("hasilCariTMK");
+        if (keyword.length < 2) { container.innerHTML = ""; return; }
+
+        const hasil = dataTMK.filter(item => item.nama.toLowerCase().includes(keyword));
+        let html = '<div class="list-group">';
+        hasil.forEach(item => {
+            html += `
+                <div class="list-group-item list-group-item-action mb-2 border-start border-danger border-4" onclick="pilihKeForm('${item.nama}')">
+                    <h6 class="mb-1 fw-bold text-danger">${item.nama}</h6>
+                    <small>Riwayat: ${item.riwayat}</small>
+                </div>`;
+        });
+        container.innerHTML = html || '<p class="text-center">Tidak ditemukan.</p>';
+    }
+
+    function filterByCountry(country) {
+        const resultDiv = document.getElementById('listNegaraHasil');
+        const data = databasePenotif.filter(item => item.negara === country);
+        let html = `<h6 class="mt-3">Hasil Penotifikasi: ${country}</h6><div class="list-group">`;
+        data.forEach(item => {
+            html += `
+                <div class="list-group-item list-group-item-action" onclick="pilihKeForm('${item.nama}')">
+                    <div class="fw-bold">${item.nama}</div>
+                    <small class="text-muted">Status: Penotifikasi Aktif</small>
+                </div>`;
+        });
+        resultDiv.innerHTML = html + '</div>';
+    }
+
+    function pilihKeForm(nama) {
+        // Otomatis isi produsen dan beri awalan di nama produk
+        document.getElementById('produsen').value = nama;
+        document.getElementById('namaProduk').value = "[Sesuai Database] ";
+        showSection('inputFormContent', document.getElementById('menuInput'));
+        alert("Data " + nama + " berhasil dipilih ke formulir.");
+    }
+
     function setupAuto() {
         const d = new Date();
-        document.getElementById('tglSampling').value = d.toLocaleString('id-ID');
+        document.getElementById('tglSampling').value = d.toLocaleDateString('id-ID');
         document.getElementById('bulanAuto').value = d.getMonth() + 1;
     }
 
-    window.onload = function() {
-
-    setupAuto();
-
-    const sidebar = document.querySelector('.sidebar');
-    const overlay = document.getElementById('overlay');
-
-    if (window.innerWidth <= 768) {
-        sidebar.classList.remove('hide');
-        overlay.classList.add('active');
-    } else {
-        overlay.classList.remove('active');
-    }
-
-};
-
-    document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
+    window.onload = setupAuto;
+document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const btn = document.getElementById('btnSimpan');
         btn.disabled = true;
@@ -708,88 +907,7 @@
         });
     });
 
-    function cariDataTMK() {
-        const input = document.getElementById("inputCariTMK");
-        const keyword = input.value.toLowerCase();
-        const container = document.getElementById("hasilCariTMK");
 
-        if (keyword.length < 2) {
-            container.innerHTML = '<p class="text-muted italic text-center">Masukkan minimal 2 huruf...</p>';
-            return;
-        }
-
-        const hasil = dataTMK.filter(item => item.nama.toLowerCase().includes(keyword));
-
-        if (hasil.length === 0) {
-            container.innerHTML = '<div class="alert alert-success text-center">Tidak ditemukan riwayat TMK</div>';
-            return;
-        }
-
-        let html = '<div class="list-group">';
-        hasil.forEach(item => {
-            html += `
-                <div class="list-group-item list-group-item-action mb-2 border-start border-danger border-4 shadow-sm" 
-                     onclick="pilihProdusen('${item.nama.replace(/'/g, "\\'")}')" style="cursor:pointer">
-                    <h6 class="mb-1 fw-bold text-danger">${item.nama}</h6>
-                    <p class="mb-0 text-muted small"><strong>Riwayat:</strong> ${item.riwayat}</p>
-                </div>`;
-        });
-        html += '</div>';
-        container.innerHTML = html;
-    }
-
-    function pilihProdusen(nama) {
-        document.getElementById('inputCariTMK').value = nama;
-        document.getElementById('namaProduk').value = "[TMK] " + nama + " - ";
-        alert("Produsen dipilih. Silakan lengkapi data produk di form input.");
-        showForm();
-    }
-
-    function showTMKSearch() {
-        document.getElementById("tmkContent").style.display = "block";
-        document.getElementById("inputFormContent").style.display = "none";
-        document.getElementById("guideContent").style.display = "none";
-        document.getElementById("pageTitle").innerText = "Riwayat TMK Produsen";
-        resetActiveMenu();
-        document.getElementById("menuTMK").classList.add("active");
-    }
-
-    function showForm() {
-        document.getElementById("tmkContent").style.display = "none";
-        document.getElementById("inputFormContent").style.display = "block";
-        document.getElementById("guideContent").style.display = "none";
-        document.getElementById("pageTitle").innerText = "Form Renlak Kosmetik 2026";
-        resetActiveMenu();
-        document.getElementById("menuInput").classList.add("active");
-    }
-
-    function tampilkanPanduanSampel() {
-        document.getElementById("tmkContent").style.display = "none";
-        document.getElementById("inputFormContent").style.display = "none";
-        document.getElementById("guideContent").style.display = "block";
-        document.getElementById("pageTitle").innerText = "Panduan Jumlah Sampel";
-        resetActiveMenu();
-        document.getElementById("menuPanduan").classList.add("active");
-    }
-
-    function resetActiveMenu() {
-        document.getElementById("menuInput").classList.remove("active");
-        document.getElementById("menuTMK").classList.remove("active");
-        document.getElementById("menuPanduan").classList.remove("active");
-    }
-function closeSidebarMobile() {
-
-    if (window.innerWidth <= 768) {
-
-        const sidebar = document.querySelector('.sidebar');
-        const overlay = document.getElementById('overlay');
-
-        sidebar.classList.add('hide');
-        overlay.classList.remove('active');
-
-    }
-
-}
 </script>
 
 </body>
