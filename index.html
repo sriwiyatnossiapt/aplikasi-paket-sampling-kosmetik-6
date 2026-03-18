@@ -68,7 +68,7 @@
             <i class="material-icons">history</i> Cari Riwayat TMK
         </a>
         <a class="nav-link" onclick="showSection('negaraContent', this)" id="menuNegara">
-            <i class="material-icons">public</i> Produsen Penotifikasi produk import (kriteria sampling mandiri balai)
+            <i class="material-icons">public</i> Penotifikasi Negara
         </a>
         <a class="nav-link" onclick="showSection('guideContent', this)" id="menuPanduan">
             <i class="material-icons">rule</i> Panduan Sampel
@@ -204,10 +204,6 @@
             </div>
 
             <div class="col-md-4">
-                <label>8. NIE (Izin Edar)</label>
-                <input type="text" id="nie" class="form-control" placeholder="NA18xxxxxxxx">
-            </div>
-            <div class="col-md-4">
                 <label>9. Nomor Batch</label>
                 <input type="text" id="noBatch" class="form-control" placeholder="Batch produksi">
             </div>
@@ -230,7 +226,9 @@
 </div>
 <script src="database-sampling.js"></script>
 <script>
-       function toggleSidebar() {
+    
+
+    function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const main = document.getElementById('main-content');
         if (window.innerWidth <= 768) {
@@ -299,17 +297,29 @@
 
     function pilihKeForm(nama) {
         // Otomatis isi produsen dan beri awalan di nama produk
-        document.getElementById('produsen').value = nama;
-        document.getElementById('namaProduk').value = "[Sesuai Database] ";
+           document.getElementById('namaProduk').value = "[Sesuai Database] ";
         showSection('inputFormContent', document.getElementById('menuInput'));
         alert("Data " + nama + " berhasil dipilih ke formulir.");
     }
 
-    function setupAuto() {
-        const d = new Date();
-        document.getElementById('tglSampling').value = d.toLocaleDateString('id-ID');
-        document.getElementById('bulanAuto').value = d.getMonth() + 1;
-    }
+  
+function setupAuto() {
+    const d = new Date();
+
+    const options = {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    };
+
+    const timestamp = d.toLocaleString('id-ID', options);
+
+    document.getElementById('tglSampling').value = timestamp;
+    document.getElementById('bulanAuto').value = d.getMonth() + 1;
+}
 
     window.onload = setupAuto;
 document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
@@ -331,8 +341,10 @@ document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
             tempat: document.getElementById('tempatSampling').value,
             bulan: document.getElementById('bulanAuto').value,
             petugas: document.getElementById('petugas').value
-        }; 
+        };
+        
         const webAppUrl = 'https://script.google.com/macros/s/AKfycbxsE2R4nWkEvscA4k8_DXski3T1TfheJ9E5Lmhui6QcCISwukmJa0R9l6ziLStTNHXK/exec';
+        
         fetch(webAppUrl, {
             method: 'POST',
             mode: 'no-cors',
@@ -350,6 +362,9 @@ document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
             btn.innerText = "KIRIM DATA KOSMETIK";
         });
     });
+
+
 </script>
+
 </body>
 </html>
