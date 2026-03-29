@@ -110,30 +110,8 @@
                 <thead class="table-secondary">
                     <tr><th>Kategori</th><th>Parameter Kimia</th><th>Parameter Mikro</th></tr>
                 </thead>
-                <tbody>
-                    <tr><td>Lipstik/Lipglos/Lipcare</td><td>16 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Blush On</td><td>16 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Eye Shadow</td><td>16 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Bedak Padat/Powder</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Pembersih Muka</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Penyegar Muka</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Hand & Body Lot</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Shampo</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Sabun mandi</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Sed Bayi Lainnya</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Parfum/Cologne</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Krim Malam</td><td>50 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Krim Siang</td><td>50 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Pelembab</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Mascara</td><td>16 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Pewarna Kuku</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Skin Lightener</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Pewarna Rambut</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Masker Wajah</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Deodorant</td><td>35 gr/ 2 kmsn</td><td>1 kmsn min 10gr</td></tr>
-                <tr><td>Anti Jerawat</td><td>6 Kmsn @ 10gr</td><td>1 kmsn min 10gr</td></tr>
-
-                </tbody>
+                <tbody id="isiTabelPanduan">
+                    </tbody>
             </table>
         </div>
     </div>
@@ -224,7 +202,8 @@
         </form>
     </div>
 </div>
-<script src="database-sampling.js"></script>
+    <script src="database-sampling.js"></script>
+    <script src="panduan-sampel.js"></script>
 <script>
     
 
@@ -321,7 +300,10 @@ function setupAuto() {
     document.getElementById('bulanAuto').value = d.getMonth() + 1;
 }
 
-    window.onload = setupAuto;
+   window.onload = function() {
+    setupAuto();          // Menjalankan setting waktu & tanggal otomatis
+    loadTablePanduan();   // Menjalankan pengisian tabel dari file panduan-sampel.js
+};
 document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const btn = document.getElementById('btnSimpan');
