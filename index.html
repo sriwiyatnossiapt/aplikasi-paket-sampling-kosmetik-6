@@ -48,9 +48,9 @@
 
         @media (max-width: 768px) {
             .main-content { margin-left: 0; padding: 20px; }
-            .sidebar { left: -280px; }
+            .sidebar { left: 0; }
             .sidebar.show { left: 0; }
-        }
+            .sidebar.hide-mobile {left: -280px}
     </style>
 </head>
 <body>
@@ -207,17 +207,23 @@
 <script>
     
 
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const main = document.getElementById('main-content');
-        if (window.innerWidth <= 768) {
-            sidebar.classList.toggle('show');
+   function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('main-content');
+    
+    if (window.innerWidth <= 768) {
+        // Di HP, kita gunakan class 'show' atau langsung manipulasi style left
+        if (sidebar.style.left === '0px' || sidebar.style.left === '') {
+            sidebar.style.left = '-280px';
         } else {
-            sidebar.classList.toggle('collapsed');
-            main.classList.toggle('expanded');
+            sidebar.style.left = '0px';
         }
+    } else {
+        // Di Desktop, tetap gunakan toggle class collapsed
+        sidebar.classList.toggle('collapsed');
+        main.classList.toggle('expanded');
     }
-
+}
     function showSection(sectionId, element) {
         ['inputFormContent', 'tmkContent', 'negaraContent', 'guideContent'].forEach(id => {
             document.getElementById(id).style.display = 'none';
