@@ -46,11 +46,19 @@
         .btn-submit { background-color: #607d8b; border: none; padding: 12px 30px; border-radius: 10px; font-weight: bold; color: white; transition: 0.3s; }
         .btn-submit:hover { background-color: #455a64; transform: translateY(-2px); }
 
-        @media (max-width: 768px) {
-            .main-content { margin-left: 0; padding: 20px; }
-            .sidebar { left: 0; }
+       @media (max-width: 768px) {
+            .main-content { 
+                margin-left: 0; 
+                padding: 20px; 
+            }
+            .sidebar { 
+                left: 0; /* Sidebar muncul saat pertama buka di HP */
+                transition: 0.3s ease; 
+            }
+            /* Class tambahan jika ingin kontrol manual */
             .sidebar.show { left: 0; }
-            .sidebar.hide-mobile {left: -280px}
+            .sidebar.hide-mobile { left: -280px; }
+        } /* Pastikan kurung penutup media query ada di sini */
     </style>
 </head>
 <body>
@@ -224,16 +232,26 @@
         main.classList.toggle('expanded');
     }
 }
-    function showSection(sectionId, element) {
-        ['inputFormContent', 'tmkContent', 'negaraContent', 'guideContent'].forEach(id => {
-            document.getElementById(id).style.display = 'none';
-        });
-        document.getElementById(sectionId).style.display = 'block';
-        document.getElementById('pageTitle').innerText = element.innerText.trim();
-        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-        element.classList.add('active');
-        if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('show');
+   function showSection(sectionId, element) {
+    // 1. Sembunyikan semua konten
+    ['inputFormContent', 'tmkContent', 'negaraContent', 'guideContent'].forEach(id => {
+        document.getElementById(id).style.display = 'none';
+    });
+
+    // 2. Tampilkan konten yang dipilih
+    document.getElementById(sectionId).style.display = 'block';
+
+    // 3. Update Judul dan class Active di menu
+    document.getElementById('pageTitle').innerText = element.innerText.trim();
+    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+    element.classList.add('active');
+
+    // 4. MENUTUP OTOMATIS DI HP
+    if (window.innerWidth <= 768) {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.style.left = '-280px'; // Paksa geser keluar layar
     }
+}
 
     function updateSubKategori() {
         const kat = document.getElementById("kategori").value;
