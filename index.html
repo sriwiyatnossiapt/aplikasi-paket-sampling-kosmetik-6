@@ -47,20 +47,10 @@
         .btn-submit:hover { background-color: #455a64; transform: translateY(-2px); }
 
         @media (max-width: 768px) {
-    .main-content { 
-        margin-left: 0; 
-        padding: 20px; 
-        width: 100%; 
-    }
-    .sidebar { 
-        left: -280px; 
-        z-index: 9999; /* Sekarang sidebar pasti di atas konten */
-        width: 80%;    /* Memberi ruang sedikit di kanan agar user tahu ada konten di baliknya */
-    }
-    .sidebar.show { 
-        left: 0; 
-    }
-}
+            .main-content { margin-left: 0; padding: 20px; }
+            .sidebar { left: -280px; }
+            .sidebar.show { left: 0; }
+        }
     </style>
 </head>
 <body>
@@ -259,31 +249,18 @@
     }
 
 function showSection(sectionId, element) {
-    // 1. Sembunyikan semua section
+    // Tambahkan 'rekapContent' ke dalam array di bawah ini
     ['inputFormContent', 'tmkContent', 'negaraContent', 'guideContent', 'rekapContent'].forEach(id => {
         const section = document.getElementById(id);
         if(section) section.style.display = 'none';
     });
     
-    // 2. Tampilkan section yang dipilih
-    const activeSection = document.getElementById(sectionId);
-    if(activeSection) {
-        activeSection.style.display = 'block';
-    }
-
-    // 3. Update Judul & Menu Aktif
+    document.getElementById(sectionId).style.display = 'block';
     document.getElementById('pageTitle').innerText = element.innerText.trim();
     document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
     element.classList.add('active');
     
-    // 4. LOGIKA PENTING UNTUK HP
-    if (window.innerWidth <= 768) {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.remove('show'); // Sembunyikan sidebar setelah klik
-        
-        // Pastikan window scroll ke atas agar user langsung lihat isi kontennya
-        window.scrollTo(0, 0); 
-    }
+    if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('show');
 }
     function updateSubKategori() {
         const kat = document.getElementById("kategori").value;
@@ -360,12 +337,6 @@ function setupAuto() {
     setupAuto();          // Menjalankan setting waktu & tanggal otomatis
     loadTablePanduan();   // Menjalankan pengisian tabel dari file panduan-sampel.js
 };
-    // Tambahan: Klik di area konten akan menutup sidebar jika sedang terbuka (khusus HP)
-    document.getElementById('main-content').addEventListener('click', function() {
-        if (window.innerWidth <= 768) {
-            document.getElementById('sidebar').classList.remove('show');
-        }
-    });
 document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const btn = document.getElementById('btnSimpan');
