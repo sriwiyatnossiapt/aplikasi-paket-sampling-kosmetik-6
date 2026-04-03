@@ -46,19 +46,11 @@
         .btn-submit { background-color: #607d8b; border: none; padding: 12px 30px; border-radius: 10px; font-weight: bold; color: white; transition: 0.3s; }
         .btn-submit:hover { background-color: #455a64; transform: translateY(-2px); }
 
-       @media (max-width: 768px) {
-            .main-content { 
-                margin-left: 0; 
-                padding: 20px; 
-            }
-            .sidebar { 
-                left: 0; /* Sidebar muncul saat pertama buka di HP */
-                transition: 0.3s ease; 
-            }
-            /* Class tambahan jika ingin kontrol manual */
+        @media (max-width: 768px) {
+            .main-content { margin-left: 0; padding: 20px; }
+            .sidebar { left: -280px; }
             .sidebar.show { left: 0; }
-            .sidebar.hide-mobile { left: -280px; }
-        } /* Pastikan kurung penutup media query ada di sini */
+        }
     </style>
 </head>
 <body>
@@ -84,6 +76,9 @@
         <a class="nav-link" href="https://docs.google.com/spreadsheets/d/1XfaZIgQGlgr3r6-zBGdy0QeCiLD_iws8auUR00DWZfY/edit" target="_blank">
             <i class="material-icons">table_view</i> Database Mentah
         </a>
+        <a class="nav-link" onclick="showSection('rekapContent', this); muatRekapDariSheet()" id="menuRekap">
+    <i class="material-icons">analytics</i> Rekap Sampel
+</a>
     </nav>
 </div>
 
@@ -123,6 +118,33 @@
             </table>
         </div>
     </div>
+<div id="rekapContent" style="display:none;" class="card">
+    <h4 class="mb-4 text-primary d-flex align-items-center">
+        <span class="material-icons me-2">analytics</span> Ringkasan Rekapitulasi Sampling
+    </h4>
+    
+    <div class="table-responsive">
+        <table class="table table-bordered bg-white shadow-sm">
+            <thead class="table-dark text-center align-middle">
+                <tr>
+                    <th rowspan="2" width="50">No</th>
+                    <th rowspan="2">Kategori Sampling</th>
+                    <th colspan="2" class="bg-success">April 2026</th>
+                </tr>
+                <tr>
+                    <th width="80">Target</th>
+                    <th width="80">Realisasi</th>
+                    <th width="80">Target</th>
+                    <th width="80">Realisasi</th>
+                </tr>
+            </thead>
+            <tbody id="isiTabelRekap">
+                </tbody>
+            <tfoot class="table-light fw-bold" id="footerTabelRekap">
+                </tfoot>
+        </table>
+    </div>
+</div>
 
     <div id="inputFormContent" class="form-card">
         <form id="kosmetikForm" class="row g-4">
@@ -215,44 +237,31 @@
 <script>
     
 
-   function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const main = document.getElementById('main-content');
-    
-    if (window.innerWidth <= 768) {
-        // Di HP, kita gunakan class 'show' atau langsung manipulasi style left
-        if (sidebar.style.left === '0px' || sidebar.style.left === '') {
-            sidebar.style.left = '-280px';
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const main = document.getElementById('main-content');
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('show');
         } else {
-            sidebar.style.left = '0px';
+            sidebar.classList.toggle('collapsed');
+            main.classList.toggle('expanded');
         }
-    } else {
-        // Di Desktop, tetap gunakan toggle class collapsed
-        sidebar.classList.toggle('collapsed');
-        main.classList.toggle('expanded');
     }
-}
-   function showSection(sectionId, element) {
-    // 1. Sembunyikan semua konten
-    ['inputFormContent', 'tmkContent', 'negaraContent', 'guideContent'].forEach(id => {
-        document.getElementById(id).style.display = 'none';
+
+function showSection(sectionId, element) {
+    // Tambahkan 'rekapContent' ke dalam array di bawah ini
+    ['inputFormContent', 'tmkContent', 'negaraContent', 'guideContent', 'rekapContent'].forEach(id => {
+        const section = document.getElementById(id);
+        if(section) section.style.display = 'none';
     });
-
-    // 2. Tampilkan konten yang dipilih
+    
     document.getElementById(sectionId).style.display = 'block';
-
-    // 3. Update Judul dan class Active di menu
     document.getElementById('pageTitle').innerText = element.innerText.trim();
     document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
     element.classList.add('active');
-
-    // 4. MENUTUP OTOMATIS DI HP
-    if (window.innerWidth <= 768) {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.style.left = '-280px'; // Paksa geser keluar layar
-    }
+    
+    if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('show');
 }
-
     function updateSubKategori() {
         const kat = document.getElementById("kategori").value;
         const subKat = document.getElementById("subKategori");
@@ -368,6 +377,55 @@ document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
             btn.innerText = "KIRIM DATA KOSMETIK";
         });
     });
+async function muatRekapDariSheet() {
+    const rekapContainer = document.getElementById('isiTabelRekap');
+    const footerContainer = document.getElementById('footerTabelRekap');
+    
+    rekapContainer.innerHTML = '<tr><td colspan="6" class="text-center py-4">Mengambil data dari spreadsheet...</td></tr>';
+
+    try {
+        const webAppUrl = 'https://script.google.com/macros/s/AKfycbxsE2R4nWkEvscA4k8_DXski3T1TfheJ9E5Lmhui6QcCISwukmJa0R9l6ziLStTNHXK/exec';
+       
+        const response = await fetch(webAppUrl);
+        const data = await response.json();
+
+        let html = '';
+        let tMaret = 0, rMaret = 0, tApril = 0, rApril = 0;
+
+        data.forEach((item, index) => {
+            // Akumulasi total
+            tMaret += parseInt(item.targetMaret || 0);
+            rMaret += parseInt(item.realisasiMaret || 0);
+            tApril += parseInt(item.targetApril || 0);
+            rApril += parseInt(item.realisasiApril || 0);
+
+            html += `
+                <tr>
+                    <td class="text-center">${index + 1}</td>
+                    <td class="fw-semibold">${item.kategori}</td>
+                    <td class="text-center">${item.targetMaret || 0}</td>
+                    <td class="text-center text-primary fw-bold">${item.realisasiMaret || 0}</td>
+                    <td class="text-center">${item.targetApril || 0}</td>
+                    <td class="text-center text-success fw-bold">${item.realisasiApril || 0}</td>
+                </tr>`;
+        });
+
+        rekapContainer.innerHTML = html;
+        
+        // Mengisi Baris Total
+        footerContainer.innerHTML = `
+            <tr>
+                <td colspan="2" class="text-center">TOTAL</td>
+                <td class="text-center">${tMaret}</td>
+                <td class="text-center text-primary">${rMaret}</td>
+                <td class="text-center">${tApril}</td>
+                <td class="text-center text-success">${rApril}</td>
+            </tr>`;
+
+    } catch (err) {
+        rekapContainer.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Gagal memuat data. Periksa koneksi atau URL GAS Anda.</td></tr>';
+    }
+}
 
 
 </script>
