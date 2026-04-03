@@ -132,9 +132,9 @@
                     <th colspan="2" class="bg-success">April 2026</th>
                 </tr>
                 <tr>
-                    <th width="80">Target Offline</th>
+                    <th width="80">Target</th>
                     <th width="80">Realisasi</th>
-                    <th width="80">Target Online</th>
+                    <th width="80">Target</th>
                     <th width="80">Realisasi</th>
                 </tr>
             </thead>
@@ -367,6 +367,8 @@ document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
         })
         .then(() => {
             alert("✅ Data Kosmetik Berhasil Terkirim!");
+            localStorage.removeItem('rekap_data_kosmetik');
+    localStorage.removeItem('rekap_cache_time');
             document.getElementById('kosmetikForm').reset();
             setupAuto();
             updateSubKategori();
@@ -380,7 +382,20 @@ document.getElementById('kosmetikForm').addEventListener('submit', function(e) {
 async function muatRekapDariSheet() {
     const rekapContainer = document.getElementById('isiTabelRekap');
     const footerContainer = document.getElementById('footerTabelRekap');
-    
+    const CACHE_KEY = 'rekap_data_kosmetik';
+    const CACHE_TIME_KEY = 'rekap_cache_time';
+    const EXPIRE_TIME = 10 * 60 * 1000; // 10 Menit dalam milidetik
+
+    // 1. Cek apakah ada Cache dan belum kadaluarsa
+    const cachedData = localStorage.getItem(CACHE_KEY);
+    const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+    const now = new Date().getTime();
+
+    if (cachedData && cachedTime && (now - cachedTime < EXPIRE_TIME)) {
+        console.log("Mengambil data dari Cache...");
+        renderTabelRekap(JSON.parse(cachedData));
+        return; // Berhenti di sini, tidak perlu fetch ke Google
+    }
     rekapContainer.innerHTML = '<tr><td colspan="6" class="text-center py-4">Mengambil data dari spreadsheet...</td></tr>';
 
     try {
@@ -388,7 +403,9 @@ async function muatRekapDariSheet() {
        
         const response = await fetch(webAppUrl);
         const data = await response.json();
-
+// 3. Simpan ke Cache
+        localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+        localStorage.setItem(CACHE_TIME_KEY, now.toString());
         let html = '';
         let tMaret = 0, rMaret = 0, tApril = 0, rApril = 0;
 
