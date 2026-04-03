@@ -443,7 +443,40 @@ async function muatRekapDariSheet() {
         rekapContainer.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Gagal memuat data. Periksa koneksi atau URL GAS Anda.</td></tr>';
     }
 }
+function renderTabelRekap(data) {
+    const rekapContainer = document.getElementById('isiTabelRekap');
+    const footerContainer = document.getElementById('footerTabelRekap');
+    
+    let html = '';
+    let tMaret = 0, rMaret = 0, tApril = 0, rApril = 0;
 
+    data.forEach((item, index) => {
+        tMaret += parseInt(item.targetMaret || 0);
+        rMaret += parseInt(item.realisasiMaret || 0);
+        tApril += parseInt(item.targetApril || 0);
+        rApril += parseInt(item.realisasiApril || 0);
+
+        html += `
+            <tr>
+                <td class="text-center">${index + 1}</td>
+                <td class="fw-semibold">${item.kategori}</td>
+                <td class="text-center">${item.targetMaret || 0}</td>
+                <td class="text-center text-primary fw-bold">${item.realisasiMaret || 0}</td>
+                <td class="text-center">${item.targetApril || 0}</td>
+                <td class="text-center text-success fw-bold">${item.realisasiApril || 0}</td>
+            </tr>`;
+    });
+
+    rekapContainer.innerHTML = html;
+    footerContainer.innerHTML = `
+        <tr class="table-light fw-bold">
+            <td colspan="2" class="text-center">TOTAL</td>
+            <td class="text-center">${tMaret}</td>
+            <td class="text-center text-primary">${rMaret}</td>
+            <td class="text-center">${tApril}</td>
+            <td class="text-center text-success">${rApril}</td>
+        </tr>`;
+}
 
 </script>
 
