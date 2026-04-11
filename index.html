@@ -107,17 +107,17 @@
     </div>
 
     <div id="guideContent" style="display:none;" class="card">
-        <h4 class="mb-4 text-primary">Panduan Jumlah Pengambilan Sampel</h4>
-        <div class="table-responsive">
-            <table class="table table-bordered bg-white">
-                <thead class="table-secondary">
-                    <tr><th>Kategori</th><th>Parameter Kimia</th><th>Parameter Mikro</th></tr>
-                </thead>
-                <tbody id="isiTabelPanduan">
-                    </tbody>
-            </table>
-        </div>
+    <h4 class="mb-4 text-primary">Panduan Sampling</h4>
+    
+    <div class="d-flex gap-2 mb-4">
+        <button class="btn btn-outline-primary" onclick="showSubGuide('jumlah')">Jumlah Pengambilan</button>
+        <button class="btn btn-outline-primary" onclick="showSubGuide('porcine')">Panduan DNA Porcine</button>
     </div>
+
+    <div id="subGuideContainer">
+        <p class="text-muted">Silakan pilih menu panduan di atas.</p>
+    </div>
+</div>
 <div id="rekapContent" style="display:none;" class="card">
     <h4 class="mb-4 text-primary d-flex align-items-center">
         <span class="material-icons me-2">analytics</span> Ringkasan Rekapitulasi Sampling
@@ -479,6 +479,76 @@ function renderTabelRekap(data) {
         </tr>`;
 }
 
+function showSubGuide(tipe) {
+    const container = document.getElementById('subGuideContainer');
+    
+    if (tipe === 'jumlah') {
+        container.innerHTML = `
+            <h5>Panduan Jumlah Pengambilan Sampel</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered bg-white">
+                    <thead class="table-secondary">
+                        <tr><th>Kategori</th><th>Parameter Kimia</th><th>Parameter Mikro</th></tr>
+                    </thead>
+                    <tbody id="isiTabelPanduan"></tbody>
+                </table>
+            </div>`;
+        loadTablePanduan(); // Panggil fungsi asal Anda
+    } else if (tipe === 'porcine') {
+        container.innerHTML = `
+            <h5>Panduan Sampling Kosmetik (DNA Porcine)</h5>
+            <div class="p-3 bg-white border rounded">
+    <p>Prosedur khusus pengambilan sampel untuk pengujian DNA Porcine berdasarkan per kabpom 131 th 2026:</p>
+    <p>Hal-hal yang perlu diperhatikan terkait sampling dan pengujian kosmetik yang diduga mengandung DNA porcine:</p>
+    <ul>
+        <li>Pengambilan sampel hanya dilakukan oleh Balai Besar POM (BBPOM).</li>
+        <li>Jumlah sampel minimal 7 pcs dengan bets yang sama dan berat/volume minimal 50 gram atau 50 ml.</li>
+        <li>Pengujian hanya dilakukan terhadap parameter uji deteksi fragmen DNA/protein porcine.</li>
+        <li>Teknis pengujian mengacu pada Pedoman Regionalisasi Laboratorium dan Standar Kemampuan Laboratorium yang berlaku.</li>
+    </ul>
+<p>Daftar bahan kosmetik yang bersumber dari hewani</p>
+<li>Allantoin: Asam urat dari sapi, sebagian besar mamalia. Juga terdapat di banyak tanaman.</li>
+<li>Arachidonic Acid (Asam Arakidonat): Asam lemak tak jenuh cair yang ditemukan di hati, otak, kelenjar, serta lemak hewan dan manusia.</li>
+<li>Bee Pollen: Lilin yang dimurnikan dari sarang lebah Apis mellifera.</li>
+<li>Biotin: Terdapat di setiap sel hidup dan dalam jumlah yang lebih besar pada susu dan ragi.</li>
+<li>Casein (Kasein): Kombinasi kompleks yang diproduksi di jaringan kelenjar susu dari asam amino yang disuplai oleh darah. Bisa didapatkan dari susu kedelai.</li>
+<li>Leukocyte (Leukosit): Sel darah putih.</li>
+<li>Serum albumin: Albumin, serum darah.</li>
+<li>Gelatin, arginine: Kombinasi protein kompleks yang diperoleh melalui hidrolisis kolagen dengan cara merebus kulit, tendon, ligamen, tulang, dan lain-lain.</li>
+<li>Carmine (CI 75470): Pigmen merah dari serangga cochineal betina yang dihancurkan.</li>
+<li>Cerebrosides: Sfingolipid yang diisolasi dari otak dan sistem saraf pusat hewan.Catatan: Cerebrosides termasuk bahan yang dilarang di Eropa (Annex II/419).</li>
+<li>Cholesterol (Kolesterol): Alkohol steroid yang terdapat di semua lemak dan minyak hewani, jaringan saraf, kuning telur, dan darah.</li>
+<li>Collagen (Kolagen): Protein berserat yang mencakup sepertiga dari total protein.</li>
+<li>Elastin: Protein tidak larut yang diekstraksi dari organisme mamalia.</li>
+<li>Hyaluronic Acid (Asam Hialuronat): Jika berasal dari hewan, protein ini ditemukan di tali pusat dan cairan di sekitar sendi. Dapat juga bersumber dari tanaman atau sintetis.</li>
+<li>Keratins (Keratin): Protein berserat alami yang terdapat pada vertebrata.</li>
+<li>Lactic Acid (Asam Laktat): Biasanya berasal dari tanaman seperti bit. Jika berasal dari hewan, ditemukan dalam darah dan jaringan otot.</li>
+<li>Lactose (Laktosa): Gula susu dari susu mamalia.</li>
+<li>Lanolin: Turunan murni dari sekresi kelenjar sebasea (lemak kulit) domba yang menyerupai lemak.</li>
+<li>Embryo Extract: Ekstrak yang diperoleh dari kulit embrio mamalia.</li>
+<li>Lecithin (Lesitin): Zat lilin dalam jaringan saraf semua organisme hidup. Namun, untuk keperluan komersial, sering diperoleh dari telur dan kedelai. Juga dapat berasal dari jaringan saraf, darah, susu, jagung, dan juga dapat dibuat secara sintetis.</li>
+<li>Lipase: Enzim dari lambung dan kelenjar lidah anak sapi, anak kambing, dan anak domba.</li>
+<li>Methionine (Metionin): Asam amino esensial yang ditemukan dalam berbagai protein (biasanya dari albumin telur dan kasein). Dapat juga dibuat secara sintetis.</li>
+<li>Milk Protein (Protein Susu): Campuran protein yang diperoleh dari susu sapi.</li>
+<li>Glycerides (Gliserida): Dari lemak hewani atau nabati.</li>
+<li>Mink Oil (Minyak Cerpelai): Jaringan lemak sub-dermal (di bawah kulit) cerpelai.</li>
+<li>Oleic Acid (Asam Oleat): Diperoleh dari berbagai lemak dan minyak hewani serta nabati.</li>
+<li>Nucleic Acid (Asam Nukleat): Terdapat dalam inti semua sel hidup, juga dapat diperoleh dari tanaman.</li>
+<li>Placenta (Plasenta): Plasenta mamalia.
+<li>Myristic Acid (Asam Miristat): Asam organik yang biasanya berasal dari minyak kacang-kacangan, tetapi kadang-kadang berasal dari hewan.</li>
+<li>Stearic Acid (Asam Stearat): Asam lemak dari hewan atau tanaman.</li>
+<li>Tyrosine (Tirosin): Asam amino yang sering berasal dari tanaman atau sintetis, tetapi terkadang dihidrolisis dari kasein (susu).</li>
+<li>Colostrum (Kolostrum): Cairan yang disekresikan oleh kelenjar susu setelah kelahiran hewan.</li>
+<li>Glycosphingolipid (Glikosfingolipid): Sfingolipid.</li>
+<li>Soluble Proteoglycan: Glikoprotein sapi yang larut.</li>
+<li>Placental Protein (Protein Plasenta): Zat ekstraktif dan turunan yang dimodifikasi secara fisik seperti protein, lipid, karbohidrat, asam nukleat, ion anorganik, dll., yang diperoleh dari plasenta mamalia.</li>
+
+
+
+</div>
+            </div>`;
+    }
+}
 </script>
 
 </body>
