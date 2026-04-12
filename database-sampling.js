@@ -863,3 +863,44 @@
         "Kosmetik di online official store/reseller": ["Lip colour, Lip liner, Lip glos, Lip care", "Skin aging product", "Day Cream", "Night Cream", "Pelembab/ Moisturiser"]
 
     };
+// database-sampling.js
+
+// ... (data lain yang mungkin sudah ada di sini, misal dataTMK atau dataKategori) ...
+
+const daftarBahanHewani = [
+    { nama: "Allantoin", deskripsi: "Asam urat dari sapi, sebagian besar mamalia. Juga terdapat di banyak tanaman." },
+    { nama: "Arachidonic Acid", deskripsi: "Asam lemak tak jenuh cair yang ditemukan di hati, otak, kelenjar, serta lemak hewan dan manusia." },
+    { nama: "Bee Pollen", deskripsi: "Lilin yang dimurnikan dari sarang lebah Apis mellifera." },
+    { nama: "Biotin", deskripsi: "Terdapat di setiap sel hidup dan dalam jumlah yang lebih besar pada susu dan ragi." },
+    { nama: "Casein", deskripsi: "Kombinasi kompleks yang diproduksi di jaringan kelenjar susu dari asam amino yang disuplai oleh darah. Bisa didapatkan dari susu kedelai." },
+    { nama: "Leukocyte", deskripsi: "Sel darah putih." },
+    { nama: "Serum albumin", deskripsi: "Albumin, serum darah." },
+    { nama: "Gelatin, arginine", deskripsi: "Kombinasi protein kompleks yang diperoleh melalui hidrolisis kolagen dengan cara merebus kulit, tendon, ligamen, tulang, dan lain-lain." },
+    { nama: "Carmine (CI 75470)", deskripsi: "Pigmen merah dari serangga cochineal betina yang dihancurkan." },
+    { nama: "Cerebrosides", deskripsi: "Sfingolipid yang diisolasi dari otak dan sistem saraf pusat hewan. Catatan: Cerebrosides termasuk bahan yang dilarang di Eropa (Annex II/419)." },
+    { nama: "Cholesterol", deskripsi: "Alkohol steroid yang terdapat di semua lemak dan minyak hewani, jaringan saraf, kuning telur, dan darah." },
+    { nama: "Collagen", deskripsi: "Protein berserat yang mencakup sepertiga dari total protein." },
+    { nama: "Elastin", deskripsi: "Protein tidak larut yang diekstraksi dari organisme mamalia." },
+    { nama: "Hyaluronic Acid", deskripsi: "Jika berasal dari hewan, protein ini ditemukan di tali pusat dan cairan di sekitar sendi. Dapat juga bersumber dari tanaman atau sintetis." },
+    { nama: "Keratins", deskripsi: "Protein berserat alami yang terdapat pada vertebrata." },
+    { nama: "Lactic Acid", deskripsi: "Biasanya berasal dari tanaman seperti bit. Jika berasal dari hewan, ditemukan dalam darah dan jaringan otot." },
+    { nama: "Lactose", deskripsi: "Gula susu dari susu mamalia." },
+    { nama: "Lanolin", deskripsi: "Turunan murni dari sekresi kelenjar sebasea (lemak kulit) domba yang menyerupai lemak." },
+    { nama: "Embryo Extract", deskripsi: "Ekstrak yang diperoleh dari kulit embrio mamalia." },
+    { nama: "Lecithin", deskripsi: "Zat lilin dalam jaringan saraf semua organisme hidup. Untuk komersial: telur/kedelai. Juga dari darah, susu, jagung, atau sintetis." },
+    { nama: "Lipase", deskripsi: "Enzim dari lambung dan kelenjar lidah anak sapi, anak kambing, dan anak lamb." },
+    { nama: "Methionine", deskripsi: "Asam amino esensial yang ditemukan dalam berbagai protein (biasanya dari albumin telur dan kasein). Dapat juga dibuat secara sintetis." },
+    { nama: "Milk Protein", deskripsi: "Campuran protein yang diperoleh dari susu sapi." },
+    { nama: "Glycerides", deskripsi: "Dari lemak hewani atau nabati." },
+    { nama: "Mink Oil", deskripsi: "Jaringan lemak sub-dermal (di bawah kulit) cerpelai." },
+    { nama: "Oleic Acid", deskripsi: "Diperoleh dari berbagai lemak dan minyak hewani serta nabati." },
+    { nama: "Nucleic Acid", deskripsi: "Terdapat dalam inti semua sel hidup, juga dapat diperoleh dari tanaman." },
+    { nama: "Placenta", deskripsi: "Plasenta mamalia." },
+    { nama: "Myristic Acid", deskripsi: "Asam organik yang biasanya berasal dari minyak kacang-kacangan, tetapi kadang-kadang berasal dari hewan." },
+    { nama: "Stearic Acid", deskripsi: "Asam lemak dari hewan atau tanaman." },
+    { nama: "Tyrosine", deskripsi: "Asam amino yang sering berasal dari tanaman atau sintetis, tetapi terkadang dihidrolisis dari kasein (susu)." },
+    { nama: "Colostrum", deskripsi: "Cairan yang disekresikan oleh kelenjar susu setelah kelahiran hewan." },
+    { nama: "Glycosphingolipid", deskripsi: "Sfingolipid." },
+    { nama: "Soluble Proteoglycan", deskripsi: "Glikoprotein sapi yang larut." },
+    { nama: "Placental Protein", deskripsi: "Zat ekstraktif yang diperoleh dari plasenta mamalia." }
+];
